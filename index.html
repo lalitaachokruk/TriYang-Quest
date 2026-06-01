@@ -1,1657 +1,1570 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>ตะลุยป่า ไตรยางศ์</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <style>
-        :root {
-            --bg-start: url('https://img.magnific.com/free-vector/forest-scene-with-various-forest-trees_1308-57640.jpg?semt=ais_hybrid&w=740&q=80');
-            --char-boy: url('https://i.postimg.cc/Wb5dHjNY/d-sin-th-y-ngmi-di-t-ngch-x-(22).png');
-            --char-girl: url('https://i.postimg.cc/YqRFBY3z/d-sin-th-y-ngmi-di-t-ngch-x-(21).png');
-            --icon-school: url('https://i.postimg.cc/q7gCZn0d/1.png'); 
-            --icon-forest: url('https://i.postimg.cc/zGGLVWyN/2.png'); 
-            --icon-cave: url('https://i.postimg.cc/g2txRJhM/3.png'); 
-            --icon-camp: url('https://i.postimg.cc/8CFjbSBD/4.png'); 
-            --icon-temple: url('https://i.postimg.cc/Bb3bsPrk/5.png'); 
-            --chest-closed: url('https://cdn-icons-png.flaticon.com/512/4230/4230569.png');
-            --chest-open: url('https://cdn-icons-png.flaticon.com/512/4230/4230571.png');
-            --boss-mask: url('https://cdn-icons-png.flaticon.com/512/2983/2983610.png');
-            --leaf: url('https://cdn-icons-png.flaticon.com/512/3264/3264104.png');
-            /* ตัวแปรสำหรับเปลี่ยนรูปกระเป๋าในภารกิจที่ 2 และ 3 คุณแก้ลิงก์ตรงนี้ได้เลย */
-            --basket-img: url('https://i.postimg.cc/y862Gr4g/d-sin-th-y-ngmi-di-t-ngch-x-(23).png'); 
+<!DOCTYPE html>  
+<html lang="th">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">  
+    <title>ตะลุยป่า ไตรยางศ์</title>  
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700;900&display=swap" rel="stylesheet">  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
+      
+    <style>  
+        :root {  
+            --bg-start: url('https://img.magnific.com/free-vector/forest-scene-with-various-forest-trees_1308-57640.jpg?semt=ais_hybrid&w=740&q=80');  
+            --char-boy: url('https://i.postimg.cc/Wb5dHjNY/d-sin-th-y-ngmi-di-t-ngch-x-(22).png');  
+            --char-girl: url('https://i.postimg.cc/YqRFBY3z/d-sin-th-y-ngmi-di-t-ngch-x-(21).png');  
+            --icon-school: url('https://i.postimg.cc/q7gCZn0d/1.png');   
+            --icon-forest: url('https://i.postimg.cc/zGGLVWyN/2.png');   
+            --icon-cave: url('https://i.postimg.cc/g2txRJhM/3.png');   
+            --icon-camp: url('https://i.postimg.cc/8CFjbSBD/4.png');   
+            --icon-temple: url('https://i.postimg.cc/Bb3bsPrk/5.png');   
+            --chest-closed: url('https://cdn-icons-png.flaticon.com/512/4230/4230569.png');  
+            --chest-open: url('https://cdn-icons-png.flaticon.com/512/4230/4230571.png');  
+            --boss-mask: url('https://cdn-icons-png.flaticon.com/512/2983/2983610.png');  
+            --leaf: url('https://cdn-icons-png.flaticon.com/512/3264/3264104.png');  
+            /* ตัวแปรสำหรับเปลี่ยนรูปกระเป๋าในภารกิจที่ 2 และ 3 คุณแก้ลิงก์ตรงนี้ได้เลย */  
+            --basket-img: url('https://i.postimg.cc/y862Gr4g/d-sin-th-y-ngmi-di-t-ngch-x-(23).png');   
         }
-
+  
         * { font-family: 'Sarabun', sans-serif; box-sizing: border-box; }
-
-        html, body {
-            margin: 0; padding: 0; width: 100vw; height: 100dvh;
-            overflow: hidden; background-color: #000; color: white; 
-            user-select: none; touch-action: none;
+  
+        html, body {  
+            margin: 0; padding: 0; width: 100vw; height: 100dvh;  
+            overflow: hidden; background-color: #000; color: white;   
+            user-select: none; touch-action: none;  
         }
-
-        .scene {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: var(--bg-start); background-size: cover; background-position: center bottom;
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-        }
+  
+        .scene {  
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;  
+            background-image: var(--bg-start); background-size: cover; background-position: center bottom;  
+            display: none; flex-direction: column; align-items: center; justify-content: center;  
+        }  
         .scene.active { display: flex; }
-
-        /* ================= เอฟเฟกต์บรรยากาศ ================= */
-        .firefly {
-            position: absolute; width: 4px; height: 4px; background: #cddc39;
-            border-radius: 50%; box-shadow: 0 0 10px 4px #cddc39;
-            animation: fly linear infinite alternate; pointer-events: none; z-index: 2; opacity: 0.8;
-        }
+  
+        /* ================= เอฟเฟกต์บรรยากาศ ================= */  
+        .firefly {  
+            position: absolute; width: 4px; height: 4px; background: #cddc39;  
+            border-radius: 50%; box-shadow: 0 0 10px 4px #cddc39;  
+            animation: fly linear infinite alternate; pointer-events: none; z-index: 2; opacity: 0.8;  
+        }  
         @keyframes fly { 0% { transform: translate(0, 0) scale(1); opacity: 0.5; } 100% { transform: translate(30px, -50px) scale(1.5); opacity: 1; } }
-
-        .falling-leaf {
-            position: absolute; top: -50px; width: 25px; height: 25px;
-            background: var(--leaf) no-repeat center/contain;
-            pointer-events: none; z-index: 3; opacity: 0.6;
-            animation: fall linear infinite;
+  
+        .falling-leaf {  
+            position: absolute; top: -50px; width: 25px; height: 25px;  
+            background: var(--leaf) no-repeat center/contain;  
+            pointer-events: none; z-index: 3; opacity: 0.6;  
+            animation: fall linear infinite;  
+        }  
+        @keyframes fall {  
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }  
+            10% { opacity: 0.7; }  
+            90% { opacity: 0.7; }  
+            100% { transform: translate(60px, 100vh) rotate(360deg); opacity: 0; }  
         }
-        @keyframes fall {
-            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translate(60px, 100vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* ================= UI หน้าแรก ================= */
-        .wood-panel {
-            position: relative;
-            padding: 30px 30px 45px 30px;
-            background-color: #8b5a2b;
-            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 4px), linear-gradient(to bottom, #a1662f, #70431c);
-            border: 6px solid #4a2e15; border-radius: 20px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 15px 25px rgba(0,0,0,0.8);
-            text-align: center; width: 85%; max-width: 420px; z-index: 100;
-        }
-        .game-title {
-            white-space: nowrap !important;
-            font-size: clamp(32px, 7vw, 48px); 
-            color: #ffca28; text-shadow: 2px 2px 0 #4a2e15, 0 0 10px #000;
-            margin: 0 0 20px 0; font-weight: 900; line-height: 1.2;
-        }
-        #input-name {
-            padding: 12px; font-size: 20px; border-radius: 10px; border: 3px solid #5c3a21;
-            text-align: center; margin-bottom: 20px; width: 100%;
-            background: #fff8e1; color: #4a2e15; font-weight: bold; outline: none;
-        }
-        .wood-btn {
-            background: linear-gradient(to bottom, #d49a57, #8b5a2b);
-            border: 3px solid #4a2e15; border-radius: 15px; color: #fff;
-            font-size: 22px; font-weight: 900; padding: 12px 30px; cursor: pointer;
-            box-shadow: 0 6px 0 #4a2e15; transition: 0.1s; width: 100%;
-        }
+  
+        /* ================= UI หน้าแรก ================= */  
+        .wood-panel {  
+            position: relative;  
+            padding: 30px 30px 45px 30px;  
+            background-color: #8b5a2b;  
+            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 4px), linear-gradient(to bottom, #a1662f, #70431c);  
+            border: 6px solid #4a2e15; border-radius: 20px;  
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 15px 25px rgba(0,0,0,0.8);  
+            text-align: center; width: 85%; max-width: 420px; z-index: 100;  
+        }  
+        .game-title {  
+            white-space: nowrap !important;  
+            font-size: clamp(32px, 7vw, 48px);   
+            color: #ffca28; text-shadow: 2px 2px 0 #4a2e15, 0 0 10px #000;  
+            margin: 0 0 20px 0; font-weight: 900; line-height: 1.2;  
+        }  
+        #input-name {  
+            padding: 12px; font-size: 20px; border-radius: 10px; border: 3px solid #5c3a21;  
+            text-align: center; margin-bottom: 20px; width: 100%;  
+            background: #fff8e1; color: #4a2e15; font-weight: bold; outline: none;  
+        }  
+        .wood-btn {  
+            background: linear-gradient(to bottom, #d49a57, #8b5a2b);  
+            border: 3px solid #4a2e15; border-radius: 15px; color: #fff;  
+            font-size: 22px; font-weight: 900; padding: 12px 30px; cursor: pointer;  
+            box-shadow: 0 6px 0 #4a2e15; transition: 0.1s; width: 100%;  
+        }  
         .wood-btn:active { transform: translateY(6px); box-shadow: 0 0 0 #4a2e15; }
-
-        .manual-link {
-            position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
-            font-size: 14px; color: #ffca28; font-weight: bold;
-            text-decoration: none; cursor: pointer; text-shadow: 1px 1px 2px #4a2e15; z-index: 50;
-            transition: 0.2s; white-space: nowrap; padding: 6px 12px;
-            background: rgba(139, 90, 43, 0.85); border-radius: 20px;
-        }
-        .manual-link:hover { color: #fff; transform: translateX(-50%) scale(1.05); }
+  
+        .manual-link {  
+            position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);  
+            font-size: 14px; color: #ffca28; font-weight: bold;  
+            text-decoration: none; cursor: pointer; text-shadow: 1px 1px 2px #4a2e15; z-index: 50;  
+            transition: 0.2s; white-space: nowrap; padding: 6px 12px;  
+            background: rgba(139, 90, 43, 0.85); border-radius: 20px;  
+        }  
+        .manual-link:hover { color: #fff; transform: translateX(-50%) scale(1.05); }  
         .manual-link.hidden { display: none; }
-
-        /* ================= ปุ่มด้านบน (Music & Settings) ================= */
-        .top-btn {
-            position: absolute; top: 15px; z-index: 2000;
-            background: #fff; border: 4px solid; border-radius: 50%;
-            width: 50px; height: 50px; justify-content: center; align-items: center;
-            font-size: 24px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.5); transition: 0.1s;
-        }
-        .top-btn:active { transform: scale(0.9); }
-        /* ซ่อนปุ่มโฮมเดิม เพื่อใช้ตัวที่สร้างใหม่ใน JS เรียงแนวตั้งซ้าย */
-        #home-btn { display: none !important; }
-        #music-btn { right: 15px; border-color: #1976d2; display: flex !important; }
+  
+        /* ================= ปุ่มด้านบน (Music & Settings) ================= */  
+        .top-btn {  
+            position: absolute; top: 15px; z-index: 2000;  
+            background: #fff; border: 4px solid; border-radius: 50%;  
+            width: 50px; height: 50px; justify-content: center; align-items: center;  
+            font-size: 24px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.5); transition: 0.1s;  
+        }  
+        .top-btn:active { transform: scale(0.9); }  
+        /* ซ่อนปุ่มโฮมเดิม เพื่อใช้ตัวที่สร้างใหม่ใน JS เรียงแนวตั้งซ้าย */  
+        #home-btn { display: none !important; }  
+        #music-btn { right: 15px; border-color: #1976d2; display: flex !important; }  
         #settings-btn { right: 70px; border-color: #4caf50; display: flex !important; }
-
-        /* ================= เลือกตัวละคร ================= */
-        .char-box {
-            background: rgba(255,255,255,0.2); border: 4px solid transparent;
-            border-radius: 20px; padding: 15px; cursor: pointer; transition: 0.2s; text-align: center; 
-            flex: none; width: 120px; 
+  
+        /* ================= เลือกตัวละคร ================= */  
+        .char-box {  
+            background: rgba(255,255,255,0.2); border: 4px solid transparent;  
+            border-radius: 20px; padding: 15px; cursor: pointer; transition: 0.2s; text-align: center;   
+            flex: none; width: 120px;   
+        }  
+        .char-box:active { background: rgba(255,255,255,0.5); border: 4px solid #ffca28; }  
+        .char-model-select {  
+            width: 100%; height: 90px; background-size: contain; background-repeat: no-repeat; background-position: center;  
+            animation: breathe 1.5s infinite ease-in-out; filter: drop-shadow(0px 8px 4px rgba(0,0,0,0.5));  
         }
-        .char-box:active { background: rgba(255,255,255,0.5); border: 4px solid #ffca28; }
-        .char-model-select {
-            width: 100%; height: 90px; background-size: contain; background-repeat: no-repeat; background-position: center;
-            animation: breathe 1.5s infinite ease-in-out; filter: drop-shadow(0px 8px 4px rgba(0,0,0,0.5));
-        }
-
+  
         @keyframes breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.02); } }
-
-        /* ================= แผนที่: เส้น & ไอคอน ================= */
-        #svg-path { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; }
-        
-        .map-node {
-            position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transform: translate(-50%, -50%); z-index: 20;
-            animation: bounceNode 2s infinite ease-in-out;
-        }
+  
+        /* ================= แผนที่: เส้น & ไอคอน ================= */  
+        #svg-path { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; }  
+          
+        .map-node {  
+            position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;  
+            transform: translate(-50%, -50%); z-index: 20;  
+            animation: bounceNode 2s infinite ease-in-out;  
+        }  
         @keyframes bounceNode { 0%, 100% { margin-top: 0; } 50% { margin-top: -8px; } }
-
-        .node-img { width: 85px; height: 85px; background-size: contain; background-repeat: no-repeat; background-position: center; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.6)); }
-        .node-label {
-            background: #fff; color: #4a2e15; border: 3px solid #4a2e15; padding: 2px 10px;
-            border-radius: 15px; font-weight: 900; font-size: 14px; margin-top: 0px; white-space: nowrap;
+  
+        .node-img { width: 85px; height: 85px; background-size: contain; background-repeat: no-repeat; background-position: center; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.6)); }  
+        .node-label {  
+            background: #fff; color: #4a2e15; border: 3px solid #4a2e15; padding: 2px 10px;  
+            border-radius: 15px; font-weight: 900; font-size: 14px; margin-top: 0px; white-space: nowrap;  
         }
-
-        #map-avatar { 
-            position: absolute; z-index: 50; transition: all 1.2s ease-in-out; 
-            width: 70px; height: 70px; background-size: contain; background-repeat: no-repeat; background-position: center;
-            transform: translate(-50%, -50%); margin-top: -25px; 
-            filter: drop-shadow(0 6px 4px rgba(0,0,0,0.6));
-            animation: breathe 1s infinite alternate ease-in-out;
+  
+        #map-avatar {   
+            position: absolute; z-index: 50; transition: all 1.2s ease-in-out;   
+            width: 70px; height: 70px; background-size: contain; background-repeat: no-repeat; background-position: center;  
+            transform: translate(-50%, -50%); margin-top: -25px;   
+            filter: drop-shadow(0 6px 4px rgba(0,0,0,0.6));  
+            animation: breathe 1s infinite alternate ease-in-out;  
         }
-
-        @media (min-width: 768px) {
-            .node-img { width: 120px; height: 120px; }
-            .node-label { font-size: 16px; padding: 4px 15px; }
-            #map-avatar { width: 100px; height: 100px; margin-top: -35px; }
+  
+        @media (min-width: 768px) {  
+            .node-img { width: 120px; height: 120px; }  
+            .node-label { font-size: 16px; padding: 4px 15px; }  
+            #map-avatar { width: 100px; height: 100px; margin-top: -35px; }  
         }
-
-        /* ================= กล่องนำทาง ================= */
-        #dialogue-popup {
-            position: absolute; background: #fff8e1; border: 4px solid #8b3a0f; border-radius: 15px;
-            padding: 10px 15px; color: #333; font-weight: bold; text-align: center;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.6); z-index: 1000; display: none; 
-            width: max-content; max-width: 220px;
-            transform: translate(-50%, -100%); margin-top: -65px;
-            flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  
+        /* ================= กล่องนำทาง ================= */  
+        #dialogue-popup {  
+            position: absolute; background: #fff8e1; border: 4px solid #8b3a0f; border-radius: 15px;  
+            padding: 10px 15px; color: #333; font-weight: bold; text-align: center;  
+            box-shadow: 0 8px 15px rgba(0,0,0,0.6); z-index: 1000; display: none;   
+            width: max-content; max-width: 220px;  
+            transform: translate(-50%, -100%); margin-top: -65px;  
+            flex-direction: column; align-items: center; justify-content: center; gap: 5px;  
+        }  
+        #dialogue-text { font-size: 16px; word-break: keep-all; }  
+        .dialogue-next { color: #d32f2f; font-size: 14px; cursor: pointer; font-weight: 900; animation: breathe 1s infinite alternate; }  
+        .dialogue-arrow {  
+            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);  
+            border-width: 10px 10px 0; border-style: solid; border-color: #8b3a0f transparent transparent transparent;  
         }
-        #dialogue-text { font-size: 16px; word-break: keep-all; }
-        .dialogue-next { color: #d32f2f; font-size: 14px; cursor: pointer; font-weight: 900; animation: breathe 1s infinite alternate; }
-        .dialogue-arrow {
-            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
-            border-width: 10px 10px 0; border-style: solid; border-color: #8b3a0f transparent transparent transparent;
-        }
-
-        /* ================= เกม & หีบสมบัติ ================= */
-        #game-chest {
-            width: 220px; height: 220px; background-image: var(--chest-closed);
-            background-size: contain; background-repeat: no-repeat; background-position: center;
-            cursor: pointer; z-index: 200; display: none; animation: floatChest 2s infinite ease-in-out;
-            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.8));
-        }
+  
+        /* ================= เกม & หีบสมบัติ ================= */  
+        #game-chest {  
+            width: 220px; height: 220px; background-image: var(--chest-closed);  
+            background-size: contain; background-repeat: no-repeat; background-position: center;  
+            cursor: pointer; z-index: 200; display: none; animation: floatChest 2s infinite ease-in-out;  
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.8));  
+        }  
         @keyframes floatChest { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-        .game-item {
-            position: absolute; width: 75px; height: 75px; background: #fff; border: 4px solid #4a2e15; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; font-size: 35px; font-weight: 900; color: #111; cursor: pointer;
-            box-shadow: 0 6px 0 #4a2e15; pointer-events: auto; user-select: none;
+  
+        .game-item {  
+            position: absolute; width: 75px; height: 75px; background: #fff; border: 4px solid #4a2e15; border-radius: 50%;  
+            display: flex; justify-content: center; align-items: center; font-size: 35px; font-weight: 900; color: #111; cursor: pointer;  
+            box-shadow: 0 6px 0 #4a2e15; pointer-events: auto; user-select: none;  
         }
-
-        /* ================= การนับคะแนน (HUD) กึ่งกลาง ไม่ซ้อนทับ ================= */
-        .hud {
-            position: absolute !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important;
-            background: transparent !important; border: none !important; padding: 0 !important; display: none; 
-            flex-direction: row !important; gap: 20px !important; font-size: 20px !important; font-weight: 900 !important; z-index: 500 !important;
-            box-shadow: none !important; width: max-content !important;
-            justify-content: center !important; align-items: center !important;
+  
+        /* ================= การนับคะแนน (HUD) กึ่งกลาง ไม่ซ้อนทับ ================= */  
+        .hud {  
+            position: absolute !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important;  
+            background: transparent !important; border: none !important; padding: 0 !important; display: none;   
+            flex-direction: row !important; gap: 20px !important; font-size: 20px !important; font-weight: 900 !important; z-index: 500 !important;  
+            box-shadow: none !important; width: max-content !important;  
+            justify-content: center !important; align-items: center !important;  
         }
-
-        .hud > div {
-            display: flex !important; flex-direction: row !important; align-items: center !important; gap: 8px !important;
-            background: #ffffff !important; 
-            border-radius: 15px !important; padding: 8px 18px !important; box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
-            border: 3px solid !important; white-space: nowrap !important;
-        }
-        /* คะแนนสีเขียวเข้ม , เวลาสีแดงสว่าง */
-        .hud > div:first-of-type { border-color: #1b5e20 !important; color: #1b5e20 !important; }
+  
+        .hud > div {  
+            display: flex !important; flex-direction: row !important; align-items: center !important; gap: 8px !important;  
+            background: #ffffff !important;   
+            border-radius: 15px !important; padding: 8px 18px !important; box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;  
+            border: 3px solid !important; white-space: nowrap !important;  
+        }  
+        /* คะแนนสีเขียวเข้ม , เวลาสีแดงสว่าง */  
+        .hud > div:first-of-type { border-color: #1b5e20 !important; color: #1b5e20 !important; }  
         .hud > div:last-of-type { border-color: #e53935 !important; color: #e53935 !important; }
-
-        @media (max-width: 768px) {
-            /* ในมือถือดันลงมาเล็กน้อยให้หลบไอคอนด้านบนและย่อขนาด */
-            .hud { top: 75px !important; gap: 10px !important; width: auto !important; justify-content: center !important;}
-            .hud > div { font-size: 16px !important; padding: 6px 12px !important; flex: none !important; border-width: 2px !important;}
+  
+        @media (max-width: 768px) {  
+            /* ในมือถือดันลงมาเล็กน้อยให้หลบไอคอนด้านบนและย่อขนาด */  
+            .hud { top: 75px !important; gap: 10px !important; width: auto !important; justify-content: center !important;}  
+            .hud > div { font-size: 16px !important; padding: 6px 12px !important; flex: none !important; border-width: 2px !important;}  
         }
-
-        /* ================= Left Menu Panel (จัดซ้าย ล่างหน้าหลัก เหลือ 3 ปุ่ม) ================= */
+  
+        /* ================= Left Menu Panel (จัดซ้าย ล่างหน้าหลัก เหลือ 3 ปุ่ม) ================= */  
         .bottom-menu { display: none !important; } /* ซ่อนเมนูเก่า HTML เดิม ให้หมด */
-
-        #left-menu-container {
-            position: absolute !important; top: 15px !important; left: 15px !important;
-            display: none; /* ซ่อนตอนแรก แสดงเมื่อเข้าฉาก Map เท่านั้น */
-            flex-direction: column !important; gap: 10px !important; z-index: 1500 !important; align-items: flex-start !important; width: auto !important;
+  
+        #left-menu-container {  
+            position: absolute !important; top: 15px !important; left: 15px !important;  
+            display: none; /* ซ่อนตอนแรก แสดงเมื่อเข้าฉาก Map เท่านั้น */  
+            flex-direction: column !important; gap: 10px !important; z-index: 1500 !important; align-items: flex-start !important; width: auto !important;  
         }
-
-        .left-btn {
-            background: rgba(255, 255, 255, 0.95) !important; border-radius: 50% !important;
-            padding: 0 !important; color: transparent !important; font-size: 0px !important; 
-            width: 50px !important; height: 50px !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.5) !important; text-shadow: none !important;
-            position: relative !important; overflow: visible !important; display: block !important;
-            cursor: pointer !important; transition: 0.2s !important; text-decoration: none; border: 4px solid;
-        }
-        .left-btn::after {
-            content: attr(data-icon) !important;
-            font-size: 24px !important; color: #333 !important; text-shadow: none !important;
-            position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important;
-            display: flex !important; align-items: center !important; justify-content: center !important;
-            transition: 0.2s !important;
-        }
-        .left-btn:hover { transform: scale(1.05) !important; }
-        .left-btn:active { transform: scale(0.95) !important; }
-        
-        .left-btn-home { border-color: #d32f2f; }
-        .left-btn-restart { border-color: #1976d2; }
+  
+        .left-btn {  
+            background: rgba(255, 255, 255, 0.95) !important; border-radius: 50% !important;  
+            padding: 0 !important; color: transparent !important; font-size: 0px !important;   
+            width: 50px !important; height: 50px !important;  
+            box-shadow: 0 4px 6px rgba(0,0,0,0.5) !important; text-shadow: none !important;  
+            position: relative !important; overflow: visible !important; display: block !important;  
+            cursor: pointer !important; transition: 0.2s !important; text-decoration: none; border: 4px solid;  
+        }  
+        .left-btn::after {  
+            content: attr(data-icon) !important;  
+            font-size: 24px !important; color: #333 !important; text-shadow: none !important;  
+            position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important;  
+            display: flex !important; align-items: center !important; justify-content: center !important;  
+            transition: 0.2s !important;  
+        }  
+        .left-btn:hover { transform: scale(1.05) !important; }  
+        .left-btn:active { transform: scale(0.95) !important; }  
+          
+        .left-btn-home { border-color: #d32f2f; }  
+        .left-btn-restart { border-color: #1976d2; }  
         .left-btn-char { border-color: #9c27b0; }
-
-        @media (max-width: 768px) {
-            #left-menu-container { top: 15px !important; left: 15px !important; gap: 8px !important;}
-            .left-btn { width: 45px !important; height: 45px !important; }
-            .left-btn::after { font-size: 20px !important; }
+  
+        @media (max-width: 768px) {  
+            #left-menu-container { top: 15px !important; left: 15px !important; gap: 8px !important;}  
+            .left-btn { width: 45px !important; height: 45px !important; }  
+            .left-btn::after { font-size: 20px !important; }  
         }
-
-        /* ================= Badge/Medal System (เรียงต่อจากเมนูซ้าย) ================= */
-        #badge-container {
-            position: absolute !important; top: 200px !important; left: 15px !important; z-index: 1900 !important;
-            display: none !important; /* ซ่อนตอนแรก แสดงเฉพาะหน้า Map */
-            flex-direction: column !important; gap: 10px !important; max-width: 50px !important;
-            background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important;
-        }
-        @media (max-width: 768px) {
-            #badge-container { top: 180px !important; left: 15px !important; gap: 8px !important;}
-        }
-        .badge {
-            width: 45px; height: 45px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; cursor: pointer; transition: 0.2s;
-            border: 3px solid gold; box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            position: relative; background: #fff;
-        }
-        @media (max-width: 768px) { .badge { width: 40px; height: 40px; font-size: 18px;} }
-        
-        .badge:hover { transform: scale(1.15); }
-        .badge.locked { opacity: 0.3; border-color: gray; filter: grayscale(1); }
-        .badge-tooltip {
-            position: absolute; left: 55px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.95);
-            color: white; padding: 6px 10px; border-radius: 5px; font-size: 11px;
-            white-space: nowrap; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 2002;
-            border: 1px solid #ffca28;
-        }
+  
+        /* ================= Badge/Medal System (เรียงต่อจากเมนูซ้าย) ================= */  
+        #badge-container {  
+            position: absolute !important; top: 200px !important; left: 15px !important; z-index: 1900 !important;  
+            display: none !important; /* ซ่อนตอนแรก แสดงเฉพาะหน้า Map */  
+            flex-direction: column !important; gap: 10px !important; max-width: 50px !important;  
+            background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important;  
+        }  
+        @media (max-width: 768px) {  
+            #badge-container { top: 180px !important; left: 15px !important; gap: 8px !important;}  
+        }  
+        .badge {  
+            width: 45px; height: 45px; border-radius: 50%;  
+            display: flex; align-items: center; justify-content: center;  
+            font-size: 22px; cursor: pointer; transition: 0.2s;  
+            border: 3px solid gold; box-shadow: 0 4px 8px rgba(0,0,0,0.4);  
+            position: relative; background: #fff;  
+        }  
+        @media (max-width: 768px) { .badge { width: 40px; height: 40px; font-size: 18px;} }  
+          
+        .badge:hover { transform: scale(1.15); }  
+        .badge.locked { opacity: 0.3; border-color: gray; filter: grayscale(1); }  
+        .badge-tooltip {  
+            position: absolute; left: 55px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.95);  
+            color: white; padding: 6px 10px; border-radius: 5px; font-size: 11px;  
+            white-space: nowrap; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 2002;  
+            border: 1px solid #ffca28;  
+        }  
         .badge:hover .badge-tooltip { opacity: 1; left: 60px; }
-
-        /* ================= Progress Bar ================= */
-        .progress-bar {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; height: 25px; background: rgba(0,0,0,0.7);
-            border: 3px solid #ffca28; border-radius: 15px; overflow: hidden; z-index: 100;
-            display: none;
+  
+        /* ================= Progress Bar ================= */  
+        .progress-bar {  
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);  
+            width: 90%; max-width: 400px; height: 25px; background: rgba(0,0,0,0.7);  
+            border: 3px solid #ffca28; border-radius: 15px; overflow: hidden; z-index: 100;  
+            display: none;  
+        }  
+        .progress-fill {  
+            height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a);  
+            transition: width 0.3s ease; display: flex; align-items: center; justify-content: center;  
+            color: #fff; font-size: 12px; font-weight: bold; text-shadow: 1px 1px 2px #000;  
         }
-        .progress-fill {
-            height: 100%; background: linear-gradient(90deg, #4caf50, #8bc34a);
-            transition: width 0.3s ease; display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 12px; font-weight: bold; text-shadow: 1px 1px 2px #000;
-        }
-
-        /* ตะกร้า ย้ายมาไว้ข้างล่างแต่ลอยอยู่เหนือแถบเหลืองนิดนึง */
-        #basket {
-            position: absolute !important; bottom: 55px !important; top: auto !important; left: 50% !important; transform: translateX(-50%) !important;
-            width: 140px !important; height: 110px !important; 
-            background: var(--basket-img) center/contain no-repeat !important;
-            display: none; z-index: 100; pointer-events: none;
-        }
+  
+        /* ตะกร้า ย้ายมาไว้ข้างล่างแต่ลอยอยู่เหนือแถบเหลืองนิดนึง */  
+        #basket {  
+            position: absolute !important; bottom: 55px !important; top: auto !important; left: 50% !important; transform: translateX(-50%) !important;  
+            width: 140px !important; height: 110px !important;   
+            background: var(--basket-img) center/contain no-repeat !important;  
+            display: none; z-index: 100; pointer-events: none;  
+        }  
         @media (max-width: 768px) { #basket { width: 120px !important; height: 90px !important; bottom: 55px !important; } }
-
-        /* ================= บอสไฟต์ (ภาพลอยด้านบน กล่องพื้นขาว) ================= */
-        #quiz-container {
-            background: #ffffff !important;
-            border: 6px solid #4a2e15 !important; border-radius: 20px !important;
-            padding: 20px !important; width: 90% !important; max-width: 500px !important; text-align: center !important; display: none; z-index: 300 !important;
-            position: absolute !important; top: 60% !important; left: 50% !important; transform: translate(-50%, -50%) !important;
-            overflow: visible !important;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4) !important;
+  
+        /* ================= บอสไฟต์ (ภาพลอยด้านบน กล่องพื้นขาว) ================= */  
+        #quiz-container {  
+            background: #ffffff !important;  
+            border: 6px solid #4a2e15 !important; border-radius: 20px !important;  
+            padding: 20px !important; width: 90% !important; max-width: 500px !important; text-align: center !important; display: none; z-index: 300 !important;  
+            position: absolute !important; top: 60% !important; left: 50% !important; transform: translate(-50%, -50%) !important;  
+            overflow: visible !important;  
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4) !important;  
+        }  
+          
+        .quiz-header {  
+            display: flex; justify-content: space-between; align-items: center;  
+            font-size: 16px; color: #4a2e15; font-weight: bold; margin-bottom: 15px;  
+            border-bottom: 3px solid #4a2e15; padding-bottom: 10px;  
         }
-        
-        .quiz-header {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 16px; color: #4a2e15; font-weight: bold; margin-bottom: 15px;
-            border-bottom: 3px solid #4a2e15; padding-bottom: 10px;
-        }
-
-        .difficulty-badge {
-            display: inline-block; padding: 5px 12px; border-radius: 20px;
-            font-size: 12px; font-weight: bold; margin-left: 10px;
-        }
-        .difficulty-easy { background: #4caf50; color: white; }
-        .difficulty-medium { background: #ff9800; color: white; }
+  
+        .difficulty-badge {  
+            display: inline-block; padding: 5px 12px; border-radius: 20px;  
+            font-size: 12px; font-weight: bold; margin-left: 10px;  
+        }  
+        .difficulty-easy { background: #4caf50; color: white; }  
+        .difficulty-medium { background: #ff9800; color: white; }  
         .difficulty-hard { background: #f44336; color: white; }
-
-        .combo-display {
-            position: absolute; top: 60px; right: 15px; background: #ff6f00;
-            color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold;
-            font-size: 18px; z-index: 501; display: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  
+        .combo-display {  
+            position: absolute; top: 60px; right: 15px; background: #ff6f00;  
+            color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold;  
+            font-size: 18px; z-index: 501; display: none;  
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);  
         }
-
-        #boss-sprite {
-            width: 110px; height: 110px; margin: -55px auto 10px auto; 
-            background: var(--boss-mask) center/contain no-repeat;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
-            animation: bossHover 2s infinite alternate; transition: 0.3s;
-        }
-        @keyframes bossHover { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
-        
+  
+        #boss-sprite {  
+            width: 110px; height: 110px; margin: -55px auto 10px auto;   
+            background: var(--boss-mask) center/contain no-repeat;  
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));  
+            animation: bossHover 2s infinite alternate; transition: 0.3s;  
+        }  
+        @keyframes bossHover { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }  
+          
         .boss-hit { filter: drop-shadow(0 0 15px red) brightness(0.7) sepia(1) hue-rotate(-50deg) saturate(5) !important; transform: scale(0.9); }
-
-        .quiz-question { font-size: 26px; color: #d32f2f; font-weight: 900; margin-bottom: 15px; }
-        
-        /* รูปภาพคำถาม (ดึงออกจากกล่องลอยอยู่บนสุด โปร่งใส ไม่มีพื้นหลัง) */
-        .quiz-img-display {
-            position: absolute !important; top: -130px !important; left: 50% !important; transform: translateX(-50%) !important;
-            width: 120px !important; height: 120px !important; object-fit: contain !important; margin: 0 !important;
-            border-radius: 0 !important; border: none !important; padding: 0 !important;
-            display: none; background: transparent !important; box-shadow: none !important;
-            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.5)) !important; z-index: 10 !important;
+  
+        .quiz-question { font-size: 26px; color: #d32f2f; font-weight: 900; margin-bottom: 15px; }  
+          
+        /* รูปภาพคำถาม (ดึงออกจากกล่องลอยอยู่บนสุด โปร่งใส ไม่มีพื้นหลัง) */  
+        .quiz-img-display {  
+            position: absolute !important; top: -130px !important; left: 50% !important; transform: translateX(-50%) !important;  
+            width: 120px !important; height: 120px !important; object-fit: contain !important; margin: 0 !important;  
+            border-radius: 0 !important; border: none !important; padding: 0 !important;  
+            display: none; background: transparent !important; box-shadow: none !important;  
+            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.5)) !important; z-index: 10 !important;  
         }
-
-        .quiz-btn {
-            display: block; width: 100%; background: #4caf50; border: 4px solid #1b5e20;
-            color: white; font-size: 20px; font-weight: bold; padding: 10px; border-radius: 15px;
-            margin-bottom: 10px; cursor: pointer; box-shadow: 0 5px 0 #1b5e20; transition: 0.1s;
-        }
-        .quiz-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #1b5e20; }
+  
+        .quiz-btn {  
+            display: block; width: 100%; background: #4caf50; border: 4px solid #1b5e20;  
+            color: white; font-size: 20px; font-weight: bold; padding: 10px; border-radius: 15px;  
+            margin-bottom: 10px; cursor: pointer; box-shadow: 0 5px 0 #1b5e20; transition: 0.1s;  
+        }  
+        .quiz-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #1b5e20; }  
         .quiz-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* ================= Hint Button ================= */
-        .hint-btn {
-            background: #2196f3; border: 3px solid #0d47a1; color: white;
-            padding: 8px 15px; border-radius: 10px; font-weight: bold;
-            cursor: pointer; margin-bottom: 10px; width: 100%;
-            box-shadow: 0 3px 0 #0d47a1; transition: 0.1s;
-        }
-        .hint-btn:active { transform: translateY(3px); box-shadow: 0 0 0 #0d47a1; }
+  
+        /* ================= Hint Button ================= */  
+        .hint-btn {  
+            background: #2196f3; border: 3px solid #0d47a1; color: white;  
+            padding: 8px 15px; border-radius: 10px; font-weight: bold;  
+            cursor: pointer; margin-bottom: 10px; width: 100%;  
+            box-shadow: 0 3px 0 #0d47a1; transition: 0.1s;  
+        }  
+        .hint-btn:active { transform: translateY(3px); box-shadow: 0 0 0 #0d47a1; }  
         .hint-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .hint-text {
-            background: #fff9c4; border-left: 4px solid #fbc02d;
-            padding: 10px; margin-bottom: 10px; border-radius: 5px;
-            color: #f57f17; font-weight: bold; display: none; font-size: 14px;
+  
+        .hint-text {  
+            background: #fff9c4; border-left: 4px solid #fbc02d;  
+            padding: 10px; margin-bottom: 10px; border-radius: 5px;  
+            color: #f57f17; font-weight: bold; display: none; font-size: 14px;  
         }
-
-        /* ================= Achievement ================= */
-        .achievement-popup {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            border: 4px solid #ff6f00; border-radius: 15px; padding: 15px 25px;
-            color: #333; font-weight: bold; font-size: 18px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.4);
-            z-index: 5000; display: none; animation: slideUp 0.5s ease-out;
+  
+        /* ================= Achievement ================= */  
+        .achievement-popup {  
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);  
+            background: linear-gradient(135deg, #ffd700, #ffed4e);  
+            border: 4px solid #ff6f00; border-radius: 15px; padding: 15px 25px;  
+            color: #333; font-weight: bold; font-size: 18px;  
+            box-shadow: 0 8px 15px rgba(0,0,0,0.4);  
+            z-index: 5000; display: none; animation: slideUp 0.5s ease-out;  
+        }  
+        @keyframes slideUp {  
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }  
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }  
         }
-        @keyframes slideUp {
-            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
-            to { transform: translateX(-50%) translateY(0); opacity: 1; }
-        }
-
-        /* ================= Settings Panel ================= */
-        #settings-panel {
-            position: fixed; top: 70px; right: 15px; background: linear-gradient(135deg, #f5f5f5, #ffffff);
-            border: 3px solid #4caf50; border-radius: 15px; padding: 20px;
-            color: #333; z-index: 2001; min-width: 320px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            max-height: 65vh; overflow-y: auto;
-        }
-        .settings-title {
-            font-size: 20px; font-weight: bold; color: #1976d2;
-            border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 15px;
-        }
-        .settings-item { margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); }
-        .settings-label { font-weight: bold; color: #333; display: block; margin-bottom: 8px; }
-        .settings-value { color: #4caf50; font-size: 14px; font-weight: bold; }
-        .settings-close { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px; color: #ff6f00; transition: 0.2s; }
+  
+        /* ================= Settings Panel ================= */  
+        #settings-panel {  
+            position: fixed; top: 70px; right: 15px; background: linear-gradient(135deg, #f5f5f5, #ffffff);  
+            border: 3px solid #4caf50; border-radius: 15px; padding: 20px;  
+            color: #333; z-index: 2001; min-width: 320px;  
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);  
+            max-height: 65vh; overflow-y: auto;  
+        }  
+        .settings-title {  
+            font-size: 20px; font-weight: bold; color: #1976d2;  
+            border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 15px;  
+        }  
+        .settings-item { margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); }  
+        .settings-label { font-weight: bold; color: #333; display: block; margin-bottom: 8px; }  
+        .settings-value { color: #4caf50; font-size: 14px; font-weight: bold; }  
+        .settings-close { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px; color: #ff6f00; transition: 0.2s; }  
         .settings-close:hover { transform: scale(1.2); }
-
-        /* ================= Achievement Rarity ================= */
-        .rarity-common { background: linear-gradient(135deg, #90ee90, #98fb98); color: #000; }
-        .rarity-uncommon { background: linear-gradient(135deg, #4169e1, #6495ed); }
-        .rarity-rare { background: linear-gradient(135deg, #9370db, #dda0dd); }
-        .rarity-epic { background: linear-gradient(135deg, #ff8c00, #ffa500); }
+  
+        /* ================= Achievement Rarity ================= */  
+        .rarity-common { background: linear-gradient(135deg, #90ee90, #98fb98); color: #000; }  
+        .rarity-uncommon { background: linear-gradient(135deg, #4169e1, #6495ed); }  
+        .rarity-rare { background: linear-gradient(135deg, #9370db, #dda0dd); }  
+        .rarity-epic { background: linear-gradient(135deg, #ff8c00, #ffa500); }  
         .rarity-legend { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000; }
-
-        /* ================= Power-ups ================= */
-        .powerup {
-            position: absolute; width: 50px; height: 50px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 30px; cursor: pointer; z-index: 150; box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            animation: floatPowerup 2s infinite ease-in-out; border: 3px solid white;
-        }
-        .powerup-2x { background: linear-gradient(135deg, #ff9800, #ffb74d); } 
-        .powerup-shield { background: linear-gradient(135deg, #2196f3, #64b5f6); } 
+  
+        /* ================= Power-ups ================= */  
+        .powerup {  
+            position: absolute; width: 50px; height: 50px;  
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;  
+            font-size: 30px; cursor: pointer; z-index: 150; box-shadow: 0 4px 8px rgba(0,0,0,0.4);  
+            animation: floatPowerup 2s infinite ease-in-out; border: 3px solid white;  
+        }  
+        .powerup-2x { background: linear-gradient(135deg, #ff9800, #ffb74d); }   
+        .powerup-shield { background: linear-gradient(135deg, #2196f3, #64b5f6); }   
         .powerup-slow { background: linear-gradient(135deg, #9c27b0, #ce93d8); } 
-
-        @keyframes floatPowerup {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(10deg); }
+  
+        @keyframes floatPowerup {  
+            0%, 100% { transform: translateY(0) rotate(0deg); }  
+            50% { transform: translateY(-15px) rotate(10deg); }  
         }
-
-        /* ================= Confetti ================= */
-        .confetti { position: fixed; pointer-events: none; z-index: 9998; animation: confettiFall 3s ease-out forwards; }
-        @keyframes confettiFall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  
+        /* ================= Confetti ================= */  
+        .confetti { position: fixed; pointer-events: none; z-index: 9998; animation: confettiFall 3s ease-out forwards; }  
+        @keyframes confettiFall {  
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }  
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }  
         }
-
-        /* ================= Streak Indicator ================= */
-        .streak-badge {
-            position: absolute; top: 120px; right: 15px; z-index: 1900;
-            background: linear-gradient(135deg, #ff6f00, #ff9100);
-            color: white; padding: 10px 20px; border-radius: 25px;
-            font-weight: bold; font-size: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            display: none; animation: pulse 0.5s ease-out;
-        }
+  
+        /* ================= Streak Indicator ================= */  
+        .streak-badge {  
+            position: absolute; top: 120px; right: 15px; z-index: 1900;  
+            background: linear-gradient(135deg, #ff6f00, #ff9100);  
+            color: white; padding: 10px 20px; border-radius: 25px;  
+            font-weight: bold; font-size: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);  
+            display: none; animation: pulse 0.5s ease-out;  
+        }  
         @keyframes pulse { 0% { transform: scale(1.2); } 100% { transform: scale(1); } }
-
-        /* ================= Time Bonus Bar ================= */
-        .time-bonus-bar {
-            position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 300px; height: 8px; background: rgba(0,0,0,0.5);
-            border: 2px solid #ffeb3b; border-radius: 5px; overflow: hidden; display: none; z-index: 100;
-        }
+  
+        /* ================= Time Bonus Bar ================= */  
+        .time-bonus-bar {  
+            position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%);  
+            width: 90%; max-width: 300px; height: 8px; background: rgba(0,0,0,0.5);  
+            border: 2px solid #ffeb3b; border-radius: 5px; overflow: hidden; display: none; z-index: 100;  
+        }  
         .time-bonus-fill { height: 100%; background: linear-gradient(90deg, #ffeb3b, #ff9800); transition: width 0.5s ease; }
-
-        /* ================= Star Rating Display ================= */
-        .star-rating {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 80px; z-index: 6000; animation: starPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        @keyframes starPop {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); opacity: 0; }
-        }
-    </style>
-</head>
+  
+        /* ================= Star Rating Display ================= */  
+        .star-rating {  
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);  
+            font-size: 80px; z-index: 6000; animation: starPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);  
+        }  
+        @keyframes starPop {  
+            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }  
+            100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); opacity: 0; }  
+        }  
+    </style>  
+</head>  
 <body>
-
-    <audio id="sfx-click" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
-    <audio id="sfx-chest" src="https://actions.google.com/sounds/v1/alarms/spaceship_alarm.ogg" preload="auto"></audio> 
-    <audio id="sfx-correct" src="https://actions.google.com/sounds/v1/cartoon/cartoon_cowbell.ogg" preload="auto"></audio>
-    <audio id="sfx-wrong" src="https://actions.google.com/sounds/v1/cartoon/slip_and_fall.ogg" preload="auto"></audio>
-    <audio id="sfx-drop" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg" preload="auto"></audio>
-    <audio id="sfx-achievement" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" preload="auto"></audio>
-    
-    <audio id="bgm-m1" src="https://mp3tourl.com/audio/1779823159138-3ce05243-a30b-4196-855b-f6a73d8ad7ab.mp3" loop preload="auto"></audio>
-    <audio id="bgm-m2" src="https://mp3tourl.com/audio/1779823741006-10020f71-6fa5-4555-8789-80bdec86c0ec.mp3" loop preload="auto"></audio>
+  
+    <audio id="sfx-click" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>  
+    <audio id="sfx-chest" src="https://actions.google.com/sounds/v1/alarms/spaceship_alarm.ogg" preload="auto"></audio>   
+    <audio id="sfx-correct" src="https://actions.google.com/sounds/v1/cartoon/cartoon_cowbell.ogg" preload="auto"></audio>  
+    <audio id="sfx-wrong" src="https://actions.google.com/sounds/v1/cartoon/slip_and_fall.ogg" preload="auto"></audio>  
+    <audio id="sfx-drop" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg" preload="auto"></audio>  
+    <audio id="sfx-achievement" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" preload="auto"></audio>  
+      
+    <audio id="bgm-m1" src="https://mp3tourl.com/audio/1779823159138-3ce05243-a30b-4196-855b-f6a73d8ad7ab.mp3" loop preload="auto"></audio>  
+    <audio id="bgm-m2" src="https://mp3tourl.com/audio/1779823741006-10020f71-6fa5-4555-8789-80bdec86c0ec.mp3" loop preload="auto"></audio>  
     <audio id="bgm-m3" src="https://mp3tourl.com/audio/1779824125833-193b9958-8213-4afa-bbb5-712dbda98016.mp3" loop preload="auto"></audio>
-
-    <div class="top-btn" id="home-btn" onclick="location.reload()">🏠</div>
-    <div class="top-btn" id="music-btn" onclick="toggleMusic()">🎵</div>
+  
+    <div class="top-btn" id="home-btn" onclick="location.reload()">🏠</div>  
+    <div class="top-btn" id="music-btn" onclick="toggleMusic()">🎵</div>  
     <div class="top-btn" id="settings-btn" onclick="toggleSettings()" style="right: 70px; border-color: #4caf50;">⚙️</div>
-
-    <div id="powerup-container" style="position: fixed; top: 80px; right: 15px; display: none; z-index: 1900; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 10px; color: white; font-weight: bold; font-size: 14px; text-align: center; border: 2px solid #ffca28;"></div>
-    
-    <div id="settings-panel" style="display: none;">
-        <div class="settings-close" onclick="toggleSettings()">✕</div>
-        <div class="settings-title">⚙️ ตั้งค่า & สถิติ</div>
-        <div class="settings-item">
-            <span class="settings-label">👤 ผู้เล่น:</span>
-            <span class="settings-value" id="settings-player">-</span>
-        </div>
-        <div class="settings-item">
-            <span class="settings-label">📊 เพชรรวม:</span>
-            <span class="settings-value" id="settings-diamonds">0/65</span>
-        </div>
-        <div class="settings-item">
-            <span class="settings-label">🔥 Combo Max:</span>
-            <span class="settings-value" id="settings-combo">0</span>
-        </div>
-        <div class="settings-item">
-            <span class="settings-label">🎮 ด่านผ่าน:</span>
-            <span class="settings-value" id="settings-passed">0/4</span>
-        </div>
-        <div class="settings-item">
-            <span class="settings-label">⏱️ เวลาเล่น:</span>
-            <span class="settings-value" id="settings-time">0 นาที</span>
-        </div>
+  
+    <div id="powerup-container" style="position: fixed; top: 80px; right: 15px; display: none; z-index: 1900; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 10px; color: white; font-weight: bold; font-size: 14px; text-align: center; border: 2px solid #ffca28;"></div>  
+      
+    <div id="settings-panel" style="display: none;">  
+        <div class="settings-close" onclick="toggleSettings()">✕</div>  
+        <div class="settings-title">⚙️ ตั้งค่า & สถิติ</div>  
+        <div class="settings-item">  
+            <span class="settings-label">👤 ผู้เล่น:</span>  
+            <span class="settings-value" id="settings-player">-</span>  
+        </div>  
+        <div class="settings-item">  
+            <span class="settings-label">📊 เพชรรวม:</span>  
+            <span class="settings-value" id="settings-diamonds">0/65</span>  
+        </div>  
+        <div class="settings-item">  
+            <span class="settings-label">🔥 Combo Max:</span>  
+            <span class="settings-value" id="settings-combo">0</span>  
+        </div>  
+        <div class="settings-item">  
+            <span class="settings-label">🎮 ด่านผ่าน:</span>  
+            <span class="settings-value" id="settings-passed">0/4</span>  
+        </div>  
+        <div class="settings-item">  
+            <span class="settings-label">⏱️ เวลาเล่น:</span>  
+            <span class="settings-value" id="settings-time">0 นาที</span>  
+        </div>  
     </div>
-
+  
     <div id="badge-container" style="display: none;"></div>
-
-    <div id="scene-title" class="scene active">
-        <div class="firefly" style="top: 20%; left: 30%; animation-duration: 3s;"></div>
-        <div class="firefly" style="top: 50%; left: 70%; animation-duration: 4s;"></div>
+  
+    <div id="scene-title" class="scene active">  
+        <div class="firefly" style="top: 20%; left: 30%; animation-duration: 3s;"></div>  
+        <div class="firefly" style="top: 50%; left: 70%; animation-duration: 4s;"></div>  
         <div class="firefly" style="top: 70%; left: 20%; animation-duration: 2.5s;"></div>
-
-        <div class="wood-panel">
-            <h1 class="game-title">ตะลุยป่าไตรยางศ์</h1>
-            <input type="text" id="input-name" placeholder="ชื่อนักสำรวจ..." autocomplete="off">
-            <button class="wood-btn" onclick="goToCharSelect()">▶ เริ่มการผจญภัย</button>
-            <div class="manual-link" onclick="showManual()">📖 คู่มือการเล่น</div>
-        </div>
+  
+        <div class="wood-panel">  
+            <h1 class="game-title">ตะลุยป่าไตรยางศ์</h1>  
+            <input type="text" id="input-name" placeholder="ชื่อนักสำรวจ..." autocomplete="off">  
+            <button class="wood-btn" onclick="goToCharSelect()">▶ เริ่มการผจญภัย</button>  
+            <div class="manual-link" onclick="showManual()">📖 คู่มือการเล่น</div>  
+        </div>  
     </div>
-
-    <div id="scene-char" class="scene">
-        <div class="wood-panel">
-            <h2 style="margin:0 0 20px 0; color:#fff; text-shadow:2px 2px #4a2e15; font-size: 24px;">เลือกคู่หูของคุณ</h2>
-            <div style="display: flex; gap: 20px; justify-content: center;">
-                <div class="char-box" onclick="enterMap('boy')">
-                    <div class="char-model-select" style="background-image: var(--char-boy);"></div>
-                    <h3 style="margin:10px 0 0 0; color:#fff;">ชาย</h3>
-                </div>
-                <div class="char-box" onclick="enterMap('girl')">
-                    <div class="char-model-select" style="background-image: var(--char-girl);"></div>
-                    <h3 style="margin:10px 0 0 0; color:#fff;">หญิง</h3>
-                </div>
-            </div>
-        </div>
+  
+    <div id="scene-char" class="scene">  
+        <div class="wood-panel">  
+            <h2 style="margin:0 0 20px 0; color:#fff; text-shadow:2px 2px #4a2e15; font-size: 24px;">เลือกคู่หูของคุณ</h2>  
+            <div style="display: flex; gap: 20px; justify-content: center;">  
+                <div class="char-box" onclick="enterMap('boy')">  
+                    <div class="char-model-select" style="background-image: var(--char-boy);"></div>  
+                    <h3 style="margin:10px 0 0 0; color:#fff;">ชาย</h3>  
+                </div>  
+                <div class="char-box" onclick="enterMap('girl')">  
+                    <div class="char-model-select" style="background-image: var(--char-girl);"></div>  
+                    <h3 style="margin:10px 0 0 0; color:#fff;">หญิง</h3>  
+                </div>  
+            </div>  
+        </div>  
     </div>
-
-    <div id="scene-map" class="scene">
-        <svg id="svg-path" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polyline id="svg-line" points="" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="3,3" />
+  
+    <div id="scene-map" class="scene">  
+        <svg id="svg-path" viewBox="0 0 100 100" preserveAspectRatio="none">  
+            <polyline id="svg-line" points="" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="3,3" />  
         </svg>
-
-        <div class="map-node" id="node-0"><div class="node-img" style="background-image: var(--icon-school);"></div><div class="node-label">จุดเริ่มต้น</div></div>
-        <div class="map-node" id="node-1"><div class="node-img" style="background-image: var(--icon-forest);"></div><div class="node-label">1. ป่าดงดิบ</div></div>
-        <div class="map-node" id="node-2"><div class="node-img" style="background-image: var(--icon-cave);"></div><div class="node-label">2. ถ้ำลึกลับ</div></div>
-        <div class="map-node" id="node-3"><div class="node-img" style="background-image: var(--icon-camp);"></div><div class="node-label">3. ค่ายริมน้ำ</div></div>
+  
+        <div class="map-node" id="node-0"><div class="node-img" style="background-image: var(--icon-school);"></div><div class="node-label">จุดเริ่มต้น</div></div>  
+        <div class="map-node" id="node-1"><div class="node-img" style="background-image: var(--icon-forest);"></div><div class="node-label">1. ป่าดงดิบ</div></div>  
+        <div class="map-node" id="node-2"><div class="node-img" style="background-image: var(--icon-cave);"></div><div class="node-label">2. ถ้ำลึกลับ</div></div>  
+        <div class="map-node" id="node-3"><div class="node-img" style="background-image: var(--icon-camp);"></div><div class="node-label">3. ค่ายริมน้ำ</div></div>  
         <div class="map-node" id="node-4"><div class="node-img" style="background-image: var(--icon-temple);"></div><div class="node-label">4. วิหารโบราณ</div></div>
-
+  
         <div id="map-avatar"></div>
-
-        <div id="dialogue-popup">
-            <div id="dialogue-text">...</div>
-            <div class="dialogue-next" onclick="nextDialogue()">▶ แตะเพื่อไปต่อ</div>
-            <div class="dialogue-arrow"></div>
+  
+        <div id="dialogue-popup">  
+            <div id="dialogue-text">...</div>  
+            <div class="dialogue-next" onclick="nextDialogue()">▶ แตะเพื่อไปต่อ</div>  
+            <div class="dialogue-arrow"></div>  
         </div>
-
-        <div class="bottom-menu" id="map-menu">
-            <button class="menu-btn" onclick="enterMap('boy')">🔄 เปลี่ยนตัวละคร</button>
-            <button class="menu-btn" onclick="goHome()">🏠 กลับหน้าแรก</button>
-        </div>
+  
+        <div class="bottom-menu" id="map-menu">  
+            <button class="menu-btn" onclick="enterMap('boy')">🔄 เปลี่ยนตัวละคร</button>  
+            <button class="menu-btn" onclick="goHome()">🏠 กลับหน้าแรก</button>  
+        </div>  
     </div>
-
-    <div id="scene-game" class="scene">
-        <div id="game-chest" onclick="openChest()"></div>
-        <div class="hud" id="game-hud">
-            <div style="color: #00e5ff;">💎 <span id="score">0</span>/20</div>
-            <div style="color: #ffeb3b;">⏳ <span id="timer">180</span></div>
-        </div>
-        <div class="combo-display" id="combo-display">🔥 Combo: <span id="combo-count">0</span></div>
-        <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill">0%</div></div>
-        <div id="game-area" style="width: 100%; height: 100%; position: relative;"></div>
-        
-        <div id="basket"></div>
-        
-        <div id="quiz-container">
-            <div class="quiz-header">
-                <span>ข้อที่ <span id="quiz-current">1</span>/30</span>
-                <span id="difficulty-display" class="difficulty-badge difficulty-easy">ง่าย</span>
-            </div>
-            
+  
+    <div id="scene-game" class="scene">  
+        <div id="game-chest" onclick="openChest()"></div>  
+        <div class="hud" id="game-hud">  
+            <div style="color: #00e5ff;">💎 <span id="score">0</span>/20</div>  
+            <div style="color: #ffeb3b;">⏳ <span id="timer">180</span></div>  
+        </div>  
+        <div class="combo-display" id="combo-display">🔥 Combo: <span id="combo-count">0</span></div>  
+        <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill">0%</div></div>  
+        <div id="game-area" style="width: 100%; height: 100%; position: relative;"></div>  
+          
+        <div id="basket"></div>  
+          
+        <div id="quiz-container">  
+            <div class="quiz-header">  
+                <span>ข้อที่ <span id="quiz-current">1</span>/44</span>  
+                <span id="difficulty-display" class="difficulty-badge difficulty-easy">ง่าย</span>  
+            </div>  
+              
             <div id="boss-sprite"></div>
-
-            <img id="quiz-img" class="quiz-img-display" src="" alt="รูปภาพคำถาม">
-            <div id="hint-text" class="hint-text">💡 คำแนะนำ: <span id="hint-content"></span></div>
-            <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 ขอคำแนะนำ</button>
-            
-            <div class="quiz-question">คำว่า "<span id="quiz-word">ไก่</span>" <br>หมู่อักษรใด?</div>
-            
-            <button class="quiz-btn" onclick="checkQuiz('กลาง', event)">อักษรกลาง</button>
-            <button class="quiz-btn" style="background: #f44336; border-color: #b71c1c;" onclick="checkQuiz('สูง', event)">อักษรสูง</button>
-            <button class="quiz-btn" style="background: #2196f3; border-color: #0d47a1;" onclick="checkQuiz('ต่ำเดี่ยว', event)">อักษรต่ำเดี่ยว</button>
-            <button class="quiz-btn" style="background: #9c27b0; border-color: #6a1b9a;" onclick="checkQuiz('ต่ำคู่', event)">อักษรต่ำคู่</button>
+  
+            <img id="quiz-img" class="quiz-img-display" src="" alt="รูปภาพคำถาม">  
+            <div id="hint-text" class="hint-text">💡 คำแนะนำ: <span id="hint-content"></span></div>  
+            <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 ขอคำแนะนำ</button>  
+              
+            <div class="quiz-question">คำว่า "<span id="quiz-word">ไก่</span>" <br>หมู่อักษรใด?</div>  
+              
+            <button class="quiz-btn" onclick="checkQuiz('กลาง', event)">อักษรกลาง</button>  
+            <button class="quiz-btn" style="background: #f44336; border-color: #b71c1c;" onclick="checkQuiz('สูง', event)">อักษรสูง</button>  
+            <button class="quiz-btn" style="background: #2196f3; border-color: #0d47a1;" onclick="checkQuiz('ต่ำเดี่ยว', event)">อักษรต่ำเดี่ยว</button>  
+            <button class="quiz-btn" style="background: #9c27b0; border-color: #6a1b9a;" onclick="checkQuiz('ต่ำคู่', event)">อักษรต่ำคู่</button>  
         </div>
-
-        <div class="achievement-popup" id="achievement-popup">
-            <span id="achievement-text">🌟 ยอดเยี่ยม!</span>
-        </div>
+  
+        <div class="achievement-popup" id="achievement-popup">  
+            <span id="achievement-text">🌟 ยอดเยี่ยม!</span>  
+        </div>  
     </div>
-
-    <script>
+  
+    <script>  
         const sheetUrl = "https://script.google.com/macros/s/AKfycbxQHu86mWczbFPaJ_JGHih5nIHxMye7S01qevDns2KSYDs5_lHWVOIFqJ8TUHc15TfY/exec";
-
-        // ================= JS: สร้างปุ่มเมนูซ้าย 3 ปุ่ม =================
-        document.addEventListener("DOMContentLoaded", () => {
-            // สร้างเมนูซ้ายใหม่ (ซ่อนไว้ก่อนเมื่อเปิดมาหน้าแรก)
-            let leftMenu = document.createElement('div');
+  
+        // ================= JS: สร้างปุ่มเมนูซ้าย 3 ปุ่ม =================  
+        document.addEventListener("DOMContentLoaded", () => {  
+            // สร้างเมนูซ้ายใหม่ (ซ่อนไว้ก่อนเมื่อเปิดมาหน้าแรก)  
+            let leftMenu = document.createElement('div');  
             leftMenu.id = 'left-menu-container';
-
-            // 1. ปุ่ม หน้าหลัก (บ้าน - ขอบแดง)
-            let btnHome = document.createElement('a');
-            btnHome.id = 'new-home-btn';
-            btnHome.className = 'left-btn left-btn-home';
-            btnHome.setAttribute('data-icon', '🏠');
-            btnHome.onclick = function(e) {
-                e.preventDefault();
-                // ซ่อนเมนูทั้งหมดตอนกลับหน้าแรก
-                leftMenu.style.setProperty('display', 'none', 'important');
-                document.getElementById('badge-container').style.setProperty('display', 'none', 'important');
-                goHome();
-            };
+  
+            // 1. ปุ่ม หน้าหลัก (บ้าน - ขอบแดง)  
+            let btnHome = document.createElement('a');  
+            btnHome.id = 'new-home-btn';  
+            btnHome.className = 'left-btn left-btn-home';  
+            btnHome.setAttribute('data-icon', '🏠');  
+            btnHome.onclick = function(e) {  
+                e.preventDefault();  
+                // ซ่อนเมนูทั้งหมดตอนกลับหน้าแรก  
+                leftMenu.style.setProperty('display', 'none', 'important');  
+                document.getElementById('badge-container').style.setProperty('display', 'none', 'important');  
+                goHome();  
+            };  
             leftMenu.appendChild(btnHome);
-
-            // 2. ปุ่ม เริ่มเกมใหม่ (รีเฟรช - ขอบน้ำเงิน)
-            let btnRestart = document.createElement('a');
-            btnRestart.id = 'new-restart-btn';
-            btnRestart.className = 'left-btn left-btn-restart';
-            btnRestart.setAttribute('data-icon', '🔄');
-            btnRestart.onclick = function(e) {
-                e.preventDefault();
-                location.reload(); 
-            };
+  
+            // 2. ปุ่ม เริ่มเกมใหม่ (รีเฟรช - ขอบน้ำเงิน)  
+            let btnRestart = document.createElement('a');  
+            btnRestart.id = 'new-restart-btn';  
+            btnRestart.className = 'left-btn left-btn-restart';  
+            btnRestart.setAttribute('data-icon', '🔄');  
+            btnRestart.onclick = function(e) {  
+                e.preventDefault();  
+                location.reload();   
+            };  
             leftMenu.appendChild(btnRestart);
-
-            // 3. ปุ่ม เปลี่ยนคู่หู (คน - ขอบม่วง)
-            let btnChar = document.createElement('a');
-            btnChar.id = 'new-char-btn';
-            btnChar.className = 'left-btn left-btn-char';
-            btnChar.setAttribute('data-icon', '👥');
-            btnChar.onclick = function(e) {
-                e.preventDefault();
-                // ซ่อนเมนูตอนเข้าหน้าเลือกคู่หู
-                leftMenu.style.setProperty('display', 'none', 'important');
-                document.getElementById('badge-container').style.setProperty('display', 'none', 'important');
-                switchScene('scene-char');
-            };
+  
+            // 3. ปุ่ม เปลี่ยนคู่หู (คน - ขอบม่วง)  
+            let btnChar = document.createElement('a');  
+            btnChar.id = 'new-char-btn';  
+            btnChar.className = 'left-btn left-btn-char';  
+            btnChar.setAttribute('data-icon', '👥');  
+            btnChar.onclick = function(e) {  
+                e.preventDefault();  
+                // ซ่อนเมนูตอนเข้าหน้าเลือกคู่หู  
+                leftMenu.style.setProperty('display', 'none', 'important');  
+                document.getElementById('badge-container').style.setProperty('display', 'none', 'important');  
+                switchScene('scene-char');  
+            };  
             leftMenu.appendChild(btnChar);
-
-            // นำใส่เข้า Body
-            document.body.appendChild(leftMenu);
-            
-            // ซ่อนและล้างคำสั่งปุ่มโฮมเดิมออก ป้องกันการทับซ้อนและโชว์มั่ว
-            let oldHome = document.getElementById('home-btn');
-            if(oldHome) {
-                oldHome.style.setProperty('display', 'none', 'important');
-                oldHome.onclick = function(e) { e.preventDefault(); e.stopPropagation(); }; 
-            }
+  
+            // นำใส่เข้า Body  
+            document.body.appendChild(leftMenu);  
+              
+            // ซ่อนและล้างคำสั่งปุ่มโฮมเดิมออก ป้องกันการทับซ้อนและโชว์มั่ว  
+            let oldHome = document.getElementById('home-btn');  
+            if(oldHome) {  
+                oldHome.style.setProperty('display', 'none', 'important');  
+                oldHome.onclick = function(e) { e.preventDefault(); e.stopPropagation(); };   
+            }  
         });
-
-        // ================= Settings & Badge System =================
-        function toggleSettings() {
-            let panel = document.getElementById('settings-panel');
-            if(panel.style.display === 'none' || !panel.style.display) {
-                updateSettingsDisplay();
-                panel.style.display = 'block';
-            } else {
-                panel.style.display = 'none';
-            }
+  
+        // ================= Settings & Badge System =================  
+        function toggleSettings() {  
+            let panel = document.getElementById('settings-panel');  
+            if(panel.style.display === 'none' || !panel.style.display) {  
+                updateSettingsDisplay();  
+                panel.style.display = 'block';  
+            } else {  
+                panel.style.display = 'none';  
+            }  
         }
-
-        function updateSettingsDisplay() {
-            document.getElementById('settings-player').innerText = playerName || '-';
-            document.getElementById('settings-diamonds').innerText = totalDiamonds + '/65';
-            document.getElementById('settings-combo').innerText = maxCombo;
-            document.getElementById('settings-passed').innerText = gameStats.levelsPassed + '/5';
-            document.getElementById('settings-time').innerText = Math.round(gameStats.totalTime / 60) + ' นาที';
+  
+        function updateSettingsDisplay() {  
+            document.getElementById('settings-player').innerText = playerName || '-';  
+            document.getElementById('settings-diamonds').innerText = totalDiamonds + '/65';  
+            document.getElementById('settings-combo').innerText = maxCombo;  
+            document.getElementById('settings-passed').innerText = gameStats.levelsPassed + '/5';  
+            document.getElementById('settings-time').innerText = Math.round(gameStats.totalTime / 60) + ' นาที';  
         }
-
-        function unlockBadge(badgeKey) {
-            if(badges[badgeKey] && !badges[badgeKey].unlocked) {
-                badges[badgeKey].unlocked = true;
-                showAchievement('🏅 ได้ Badge: ' + badges[badgeKey].name);
-                updateBadgesDisplay();
-            }
+  
+        function unlockBadge(badgeKey) {  
+            if(badges[badgeKey] && !badges[badgeKey].unlocked) {  
+                badges[badgeKey].unlocked = true;  
+                showAchievement('🏅 ได้ Badge: ' + badges[badgeKey].name);  
+                updateBadgesDisplay();  
+            }  
         }
-
-        function updateBadgesDisplay() {
-            let container = document.getElementById('badge-container');
-            if(Object.values(badges).some(b => b.unlocked)) {
-                // ให้เปิดแค่ตอนอยู่หน้า Map เท่านั้น
-                if(document.getElementById('scene-map').classList.contains('active')){
-                    container.style.setProperty('display', 'flex', 'important');
-                }
-            }
-            container.innerHTML = '';
-            
-            for(let key in badges) {
-                let badge = badges[key];
-                let badgeEl = document.createElement('div');
-                badgeEl.className = 'badge ' + (badge.unlocked ? 'rarity-' + badge.rarity : 'locked');
-                badgeEl.innerText = badge.icon;
-                badgeEl.innerHTML += '<div class="badge-tooltip">' + (badge.unlocked ? badge.name : 'ล็อก') + '</div>';
-                container.appendChild(badgeEl);
-            }
+  
+        function updateBadgesDisplay() {  
+            let container = document.getElementById('badge-container');  
+            if(Object.values(badges).some(b => b.unlocked)) {  
+                // ให้เปิดแค่ตอนอยู่หน้า Map เท่านั้น  
+                if(document.getElementById('scene-map').classList.contains('active')){  
+                    container.style.setProperty('display', 'flex', 'important');  
+                }  
+            }  
+            container.innerHTML = '';  
+              
+            for(let key in badges) {  
+                let badge = badges[key];  
+                let badgeEl = document.createElement('div');  
+                badgeEl.className = 'badge ' + (badge.unlocked ? 'rarity-' + badge.rarity : 'locked');  
+                badgeEl.innerText = badge.icon;  
+                badgeEl.innerHTML += '<div class="badge-tooltip">' + (badge.unlocked ? badge.name : 'ล็อก') + '</div>';  
+                container.appendChild(badgeEl);  
+            }  
         }
-
-        function checkBadges() {
-            if(totalDiamonds >= 65) unlockBadge('perfect_score');
-            if(maxCombo >= 10) unlockBadge('combo_master');
-            if(gameStats.levelsPassed >= 5) unlockBadge('all_stages');
-            if(usedPowerups >= 3) unlockBadge('powerup_collector');
-            if(gameStats.totalTime >= 300) unlockBadge('speed_demon');
+  
+        function checkBadges() {  
+            if(totalDiamonds >= 65) unlockBadge('perfect_score');  
+            if(maxCombo >= 10) unlockBadge('combo_master');  
+            if(gameStats.levelsPassed >= 5) unlockBadge('all_stages');  
+            if(usedPowerups >= 3) unlockBadge('powerup_collector');  
+            if(gameStats.totalTime >= 300) unlockBadge('speed_demon');  
         }
-
-        function createLeaves() {
-            const container = document.getElementById('scene-map');
-            for(let i=0; i<8; i++) {
-                let leaf = document.createElement('div');
-                leaf.className = 'falling-leaf';
-                leaf.style.left = Math.random() * 100 + 'vw';
-                leaf.style.animationDuration = (6 + Math.random() * 6) + 's';
-                leaf.style.animationDelay = (Math.random() * 5) + 's';
-                container.appendChild(leaf);
-            }
-        }
+  
+        function createLeaves() {  
+            const container = document.getElementById('scene-map');  
+            for(let i=0; i<8; i++) {  
+                let leaf = document.createElement('div');  
+                leaf.className = 'falling-leaf';  
+                leaf.style.left = Math.random() * 100 + 'vw';  
+                leaf.style.animationDuration = (6 + Math.random() * 6) + 's';  
+                leaf.style.animationDelay = (Math.random() * 5) + 's';  
+                container.appendChild(leaf);  
+            }  
+        }  
         createLeaves();
-
-        function createConfetti(count = 30) {
-            for(let i = 0; i < count; i++) {
-                let conf = document.createElement('div');
-                conf.className = 'confetti';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.top = '-10px';
-                conf.style.width = (Math.random() * 10 + 5) + 'px';
-                conf.style.height = (Math.random() * 10 + 5) + 'px';
-                conf.style.background = ['#ffeb3b', '#ff9800', '#f44336', '#2196f3', '#4caf50', '#9c27b0'][Math.floor(Math.random() * 6)];
-                conf.style.animationDelay = (Math.random() * 0.5) + 's';
-                conf.style.transform = `rotateZ(${Math.random() * 360}deg)`;
-                document.body.appendChild(conf);
-                setTimeout(() => conf.remove(), 3500);
-            }
+  
+        function createConfetti(count = 30) {  
+            for(let i = 0; i < count; i++) {  
+                let conf = document.createElement('div');  
+                conf.className = 'confetti';  
+                conf.style.left = Math.random() * 100 + 'vw';  
+                conf.style.top = '-10px';  
+                conf.style.width = (Math.random() * 10 + 5) + 'px';  
+                conf.style.height = (Math.random() * 10 + 5) + 'px';  
+                conf.style.background = ['#ffeb3b', '#ff9800', '#f44336', '#2196f3', '#4caf50', '#9c27b0'][Math.floor(Math.random() * 6)];  
+                conf.style.animationDelay = (Math.random() * 0.5) + 's';  
+                conf.style.transform = `rotateZ(${Math.random() * 360}deg)`;  
+                document.body.appendChild(conf);  
+                setTimeout(() => conf.remove(), 3500);  
+            }  
         }
-
-        function showStarRating(stars) {
-            let el = document.createElement('div');
-            el.className = 'star-rating';
-            el.innerText = '⭐'.repeat(stars);
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 600);
+  
+        function showStarRating(stars) {  
+            let el = document.createElement('div');  
+            el.className = 'star-rating';  
+            el.innerText = '⭐'.repeat(stars);  
+            document.body.appendChild(el);  
+            setTimeout(() => el.remove(), 600);  
         }
-
-        function spawnPowerup() {
-            if(Math.random() > 0.08) return; 
-            
-            let types = [
-                { icon: '2️⃣', type: '2x', name: '2x คะแนน', duration: 8 },
-                { icon: '🛡️', type: 'shield', name: 'Shield', duration: 10 },
-                { icon: '⏱️', type: 'slow', name: 'Slow Motion', duration: 6 }
-            ];
-            
-            let chosen = types[Math.floor(Math.random() * types.length)];
-            let powerup = document.createElement('div');
-            powerup.className = 'powerup powerup-' + chosen.type;
-            powerup.innerText = chosen.icon;
-            powerup.style.left = Math.floor(Math.random() * 80) + 10 + '%';
-            
-            // หลีกเลี่ยงให้พาวเวอร์อัพไม่ซ้อนกับเวลาในโทรศัพท์ (ดันลงมาเพื่อให้ร่วงต่ำกว่าแถบ HUD)
-            powerup.style.top = '130px';
-            
-            document.getElementById('game-area').appendChild(powerup);
-            
-            let pos = 130;
-            let fallSpeed = window.innerHeight / 250;
-            
-            let fall = setInterval(() => {
-                pos += fallSpeed;
-                powerup.style.top = pos + 'px';
-                if(pos > window.innerHeight) {
-                    clearInterval(fall); powerup.remove();
-                }
+  
+        function spawnPowerup() {  
+            if(Math.random() > 0.08) return;   
+              
+            let types = [  
+                { icon: '2️⃣', type: '2x', name: '2x คะแนน', duration: 8 },  
+                { icon: '🛡️', type: 'shield', name: 'Shield', duration: 10 },  
+                { icon: '⏱️', type: 'slow', name: 'Slow Motion', duration: 6 }  
+            ];  
+              
+            let chosen = types[Math.floor(Math.random() * types.length)];  
+            let powerup = document.createElement('div');  
+            powerup.className = 'powerup powerup-' + chosen.type;  
+            powerup.innerText = chosen.icon;  
+            powerup.style.left = Math.floor(Math.random() * 80) + 10 + '%';  
+              
+            // หลีกเลี่ยงให้พาวเวอร์อัพไม่ซ้อนกับเวลาในโทรศัพท์ (ดันลงมาเพื่อให้ร่วงต่ำกว่าแถบ HUD)  
+            powerup.style.top = '130px';  
+              
+            document.getElementById('game-area').appendChild(powerup);  
+              
+            let pos = 130;  
+            let fallSpeed = window.innerHeight / 250;  
+              
+            let fall = setInterval(() => {  
+                pos += fallSpeed;  
+                powerup.style.top = pos + 'px';  
+                if(pos > window.innerHeight) {  
+                    clearInterval(fall); powerup.remove();  
+                }  
             }, 20);
-
-            powerup.onclick = function(e) {
-                e.stopPropagation();
-                clearInterval(fall);
-                activatePowerup(chosen.type, chosen.name, chosen.duration);
-                this.remove();
-                playSfx('sfx-correct');
-                createConfetti(20);
-            };
+  
+            powerup.onclick = function(e) {  
+                e.stopPropagation();  
+                clearInterval(fall);  
+                activatePowerup(chosen.type, chosen.name, chosen.duration);  
+                this.remove();  
+                playSfx('sfx-correct');  
+                createConfetti(20);  
+            };  
         }
-
-        function activatePowerup(type, name, duration) {
-            if(activePowerups[type]) return;
-            
-            activePowerups[type] = true;
-            
-            if(type === '2x') scoreMultiplier = 2;
-            else if(type === 'shield') {
-                // Shield
-            } else if(type === 'slow') {
-                document.querySelectorAll('.game-item').forEach(item => {
-                    item.style.animationPlayState = 'paused';
-                });
+  
+        function activatePowerup(type, name, duration) {  
+            if(activePowerups[type]) return;  
+              
+            activePowerups[type] = true;  
+              
+            if(type === '2x') scoreMultiplier = 2;  
+            else if(type === 'shield') {  
+                // Shield  
+            } else if(type === 'slow') {  
+                document.querySelectorAll('.game-item').forEach(item => {  
+                    item.style.animationPlayState = 'paused';  
+                });  
             }
-
-            let popup = document.getElementById('powerup-container');
-            popup.style.display = 'block';
-            popup.innerText = `✨ ${name} (${duration}s)`;
-            
-            setTimeout(() => {
-                activePowerups[type] = false;
-                scoreMultiplier = 1;
-                if(type === 'slow') {
-                    document.querySelectorAll('.game-item').forEach(item => {
-                        item.style.animationPlayState = 'running';
-                    });
-                }
-                popup.style.display = 'none';
-            }, duration * 1000);
+  
+            let popup = document.getElementById('powerup-container');  
+            popup.style.display = 'block';  
+            popup.innerText = `✨ ${name} (${duration}s)`;  
+              
+            setTimeout(() => {  
+                activePowerups[type] = false;  
+                scoreMultiplier = 1;  
+                if(type === 'slow') {  
+                    document.querySelectorAll('.game-item').forEach(item => {  
+                        item.style.animationPlayState = 'running';  
+                    });  
+                }  
+                popup.style.display = 'none';  
+            }, duration * 1000);  
         }
-
-        function updateTimeBonus(timeLeft) {
-            if(timeLeft > 250) timeBonus = 5;
-            else if(timeLeft > 200) timeBonus = 4;
-            else if(timeLeft > 150) timeBonus = 3;
-            else if(timeLeft > 100) timeBonus = 2;
-            else if(timeLeft > 50) timeBonus = 1;
-            else timeBonus = 0;
-            
-            let bonusBar = document.getElementById('time-bonus-bar');
-            if(bonusBar) {
-                let fillPercent = Math.max(0, (timeLeft / (storyProgress===5 ? 600 : 240)) * 100);
-                document.getElementById('time-bonus-fill').style.width = fillPercent + '%';
-            }
+  
+        function updateTimeBonus(timeLeft) {  
+            if(timeLeft > 250) timeBonus = 5;  
+            else if(timeLeft > 200) timeBonus = 4;  
+            else if(timeLeft > 150) timeBonus = 3;  
+            else if(timeLeft > 100) timeBonus = 2;  
+            else if(timeLeft > 50) timeBonus = 1;  
+            else timeBonus = 0;  
+              
+            let bonusBar = document.getElementById('time-bonus-bar');  
+            if(bonusBar) {  
+                let fillPercent = Math.max(0, (timeLeft / (storyProgress===5 ? 600 : 240)) * 100);  
+                document.getElementById('time-bonus-fill').style.width = fillPercent + '%';  
+            }  
         }
-
-        function calculateDifficultyBonus(difficulty) {
-            if(difficulty === 'easy') return 1;
-            if(difficulty === 'medium') return 1.5;
-            if(difficulty === 'hard') return 2;
-            return 1;
+  
+        function calculateDifficultyBonus(difficulty) {  
+            if(difficulty === 'easy') return 1;  
+            if(difficulty === 'medium') return 1.5;  
+            if(difficulty === 'hard') return 2;  
+            return 1;  
         }
-
-        function showFloatingText(txt, x, y, color) {
-            let el = document.createElement('div');
-            el.innerText = txt;
-            el.style.position = 'fixed';
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-            el.style.color = color;
-            el.style.fontSize = '40px';
-            el.style.fontWeight = '900';
-            el.style.textShadow = '2px 2px 0 #000, -1px -1px 0 #fff';
-            el.style.pointerEvents = 'none';
-            el.style.zIndex = '9999';
-            el.style.transition = 'all 0.8s ease-out';
-            document.body.appendChild(el);
-            
-            void el.offsetWidth;
-            
-            el.style.top = (y - 80) + 'px';
-            el.style.opacity = '0';
-            
-            setTimeout(() => el.remove(), 800);
+  
+        function showFloatingText(txt, x, y, color) {  
+            let el = document.createElement('div');  
+            el.innerText = txt;  
+            el.style.position = 'fixed';  
+            el.style.left = x + 'px';  
+            el.style.top = y + 'px';  
+            el.style.color = color;  
+            el.style.fontSize = '40px';  
+            el.style.fontWeight = '900';  
+            el.style.textShadow = '2px 2px 0 #000, -1px -1px 0 #fff';  
+            el.style.pointerEvents = 'none';  
+            el.style.zIndex = '9999';  
+            el.style.transition = 'all 0.8s ease-out';  
+            document.body.appendChild(el);  
+              
+            void el.offsetWidth;  
+              
+            el.style.top = (y - 80) + 'px';  
+            el.style.opacity = '0';  
+              
+            setTimeout(() => el.remove(), 800);  
         }
-
-        function showManual() {
-            let isMobile = window.innerWidth < 768;
-            let dialogHTML = '';
-            
-            if(isMobile) {
-                dialogHTML = `<div style="text-align:left; font-size:14px; line-height:1.8; max-height:65vh; overflow-y:auto;">
-                    <b style="color:#d32f2f;">🎮 วิธีเล่น (ก-ฮ):</b><br><br>
-                    <b>📌 ภารกิจที่ 1-2 (กลาง, สูง):</b><br>
-                    &nbsp;&nbsp;• เวลา: 4 นาทีต่อภารกิจ<br>
-                    &nbsp;&nbsp;• ร่วงทั้งหมด 55 ข้อ ต้องเก็บข้อถูกให้ได้ 10 ข้อขึ้นไป เพื่อผ่านด่าน<br><br>
-                    <b>📌 ภารกิจที่ 3 (แยกเป็น 2 ภารกิจย่อย):</b><br>
-                    &nbsp;&nbsp;• ต่ำเดี่ยว (4 นาที) ร่วง 55 ตัว ต้องเก็บข้อถูกให้ได้ 10 ข้อขึ้นไป<br>
-                    &nbsp;&nbsp;• ต่ำคู่ (4 นาที) ร่วง 55 ตัว ต้องเก็บข้อถูกให้ได้ 10 ข้อขึ้นไป<br><br>
-                    <b>📌 ภารกิจที่ 4 (บอสไฟต์รวม):</b><br>
-                    &nbsp;&nbsp;• 44 ข้อ (เวลา: 10 นาที)<br>
-                    &nbsp;&nbsp;• ต้องตอบถูก 22 ข้อขึ้นไป เพื่อชนะบอส<br><br>
-                    <b style="color:#ff6f00;">💎 เกณฑ์เพชร:</b><br>
-                    ภารกิจ 1-3 = ผ่านด่านละ 20 เพชร (ภารกิจ 3 จะเอาคะแนน 2 รอบมารวมและหารเฉลี่ยให้ได้ 20)<br>
-                    บอสไฟต์ = ได้รับเพิ่มสูงสุด 5 เพชร รวมทั้งหมด 65 เพชร
-                    </div>`;
-            } else {
-                dialogHTML = `<div style="text-align:center; font-size:15px; line-height:1.8; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div style="text-align:left;">
-                        <b style="color:#d32f2f; font-size:16px;">🎮 วิธีเล่น</b><br><br>
-                        <b>📌 ภารกิจที่ 1-2:</b><br>
-                        ร่วง 55 ตัว เวลา: 4 นาที<br>
-                        ต้องเก็บข้อถูก 10 ข้อขึ้นไป<br><br>
-                        <b>📌 ภารกิจที่ 3 (แยกย่อย):</b><br>
-                        ต่ำเดี่ยว ร่วง 55 ตัว (4 นาที) เก็บ 10 ข้อขึ้นไป<br>
-                        ต่ำคู่ ร่วง 55 ตัว (4 นาที) เก็บ 10 ข้อขึ้นไป<br><br>
-                        <b>📌 ภารกิจที่ 4 (บอส):</b><br>
-                        44 ข้อ บอสไฟต์<br>
-                        เวลา: 10 นาที<br>
-                        ต้องถูก 22 คะแนนขึ้นไป
+  
+        function showManual() {  
+            let isMobile = window.innerWidth < 768;  
+            let dialogHTML = '';  
+              
+            if(isMobile) {  
+                dialogHTML = `<div style="text-align:left; font-size:13px; line-height:1.7; max-height:70vh; overflow-y:auto; padding:5px;">  
+                    <div style="background:#e3f2fd; padding:12px; border-radius:10px; margin-bottom:15px; border-left:4px solid #1976d2;">  
+                        <b style="color:#1976d2; font-size:16px;">🎮 ภาพรวมการเล่น</b><br>  
+                        <span style="color:#333;">ผจญภัยผ่าน 4 ภารกิจหลัก + 1 ด่านบอส รวบรวมเพชรสูงสุด <b>65 เม็ด</b></span>  
                     </div>
-                    <div style="text-align:left;">
-                        <b style="color:#ff6f00; font-size:16px;">💎 เกณฑ์เพชร</b><br><br>
-                        ภารกิจ 1,2 = ผ่านได้ด่านละ 20 เพชร<br><br>
-                        ภารกิจ 3 = ผ่าน 2 ด่านเฉลี่ยได้ 20 เพชร<br><br>
-                        บอสไฟต์ = สูงสุด 5 เพชร<br><br>
-                        <b style="color:#4caf50;">🎯 รวมทั้งหมด 65 เพชร</b>
+  
+                    <div style="background:#fff3e0; padding:10px; border-radius:8px; margin-bottom:12px; border-left:4px solid #ff9800;">  
+                        <b style="color:#e65100;">📌 ภารกิจที่ 1: ป่าดงดิบ (อักษรกลาง)</b><br>  
+                        🎯 <b>เป้าหมาย:</b> เก็บอักษรกลางให้ได้ 10 ตัวขึ้นไป<br>  
+                        ⏱️ <b>เวลา:</b> 4 นาที<br>  
+                        📊 <b>จำนวนร่วง:</b> 55 ตัว (ถูก 20 ตัว + หลอก 35 ตัว)<br>  
+                        💎 <b>รางวัล:</b> 20 เพชร<br>  
+                        📝 <b>อักษรกลาง:</b> ก จ ด ต บ ป อ ฎ ฏ  
                     </div>
-                </div>`;
+  
+                    <div style="background:#f3e5f5; padding:10px; border-radius:8px; margin-bottom:12px; border-left:4px solid #9c27b0;">  
+                        <b style="color:#6a1b9a;">📌 ภารกิจที่ 2: ถ้ำลึกลับ (อักษรสูง)</b><br>  
+                        🎯 <b>เป้าหมาย:</b> ใส่อักษรสูงลงตะกร้า 10 ตัวขึ้นไป<br>  
+                        ⏱️ <b>เวลา:</b> 4 นาที<br>  
+                        📊 <b>จำนวนร่วง:</b> 55 ตัว (ถูก 20 ตัว + หลอก 35 ตัว)<br>  
+                        💎 <b>รางวัล:</b> 20 เพชร<br>  
+                        🎁 <b>พิเศษ:</b> มีตะกร้ารับของ<br>  
+                        📝 <b>อักษรสูง:</b> ข ฃ ฉ ฐ ถ ผ ฝ ศ ษ ส ห  
+                    </div>
+  
+                    <div style="background:#e8f5e9; padding:10px; border-radius:8px; margin-bottom:12px; border-left:4px solid #4caf50;">  
+                        <b style="color:#2e7d32;">📌 ภารกิจที่ 3: ค่ายริมน้ำ (แบ่ง 2 รอบ)</b><br>  
+                          
+                        <div style="margin:8px 0; padding:8px; background:white; border-radius:5px;">  
+                            <b style="color:#00897b;">🔹 รอบที่ 1: อักษรต่ำเดี่ยว</b><br>  
+                            🎯 เก็บให้ได้ 10 ตัวขึ้นไป<br>  
+                            ⏱️ เวลา: 4 นาที<br>  
+                            📊 ร่วง: 55 ตัว<br>  
+                            💎 รางวัล: 10 เพชร<br>  
+                            📝 <b>ต่ำเดี่ยว:</b> ง ญ ณ น ม ย ร ล ว ฬ  
+                        </div>
+  
+                        <div style="margin:8px 0; padding:8px; background:white; border-radius:5px;">  
+                            <b style="color:#00897b;">🔹 รอบที่ 2: อักษรต่ำคู่</b><br>  
+                            🎯 ใส่ลงตะกร้า 10 ตัวขึ้นไป<br>  
+                            ⏱️ เวลา: 4 นาที<br>  
+                            📊 ร่วง: 55 ตัว<br>  
+                            💎 รางวัล: 10 เพชร<br>  
+                            🎁 มีตะกร้ารับของ<br>  
+                            📝 <b>ต่ำคู่:</b> ค ฅ ฆ ช ซ ฌ ฑ ฒ ท ธ พ ฟ ภ ฮ  
+                        </div>  
+                    </div>
+  
+                    <div style="background:#ffebee; padding:10px; border-radius:8px; margin-bottom:12px; border-left:4px solid #f44336;">  
+                        <b style="color:#c62828;">📌 ภารกิจที่ 4: วิหารโบราณ (บอสไฟต์)</b><br>  
+                        🎯 <b>เป้าหมาย:</b> ตอบถูก 22 ข้อขึ้นไป (จาก 44 ข้อ)<br>  
+                        ⏱️ <b>เวลา:</b> 10 นาที<br>  
+                        🎮 <b>รูปแบบ:</b> เลือกตอบคำถามแบบ Multiple Choice<br>  
+                        💎 <b>รางวัล:</b> สูงสุด 5 เพชร<br>  
+                        ⭐ <b>เกณฑ์:</b><br>  
+                        &nbsp;&nbsp;• ≥80% (36+) = ⭐⭐⭐ (5 เพชร)<br>  
+                        &nbsp;&nbsp;• ≥55% (24-35) = ⭐⭐ (4 เพชร)<br>  
+                        &nbsp;&nbsp;• ≥50% (22-23) = ⭐ (3 เพชร)<br>  
+                        💡 <b>คำแนะนำ:</b> มีระบบ Hint ช่วย  
+                    </div>
+  
+                    <div style="background:#fff9c4; padding:10px; border-radius:8px; border:2px dashed #f57f17;">  
+                        <b style="color:#f57f17;">🏆 สรุปรางวัลทั้งหมด</b><br>  
+                        • ภารกิจ 1: 20 เพชร<br>  
+                        • ภารกิจ 2: 20 เพชร<br>  
+                        • ภารกิจ 3: 20 เพชร (10+10)<br>  
+                        • บอสไฟต์: 5 เพชร<br>  
+                        <b style="color:#2e7d32;">💎 รวมทั้งหมด: 65 เพชร</b>  
+                    </div>
+  
+                    <div style="background:#e1f5fe; padding:10px; border-radius:8px; margin-top:12px;">  
+                        <b style="color:#01579b;">💡 เคล็ดลับความสำเร็จ</b><br>  
+                        ✅ จดจำลายเส้นอักษร<br>  
+                        ✅ ใช้เวลาอย่างชาญฉลาด<br>  
+                        ✅ ระวังอักษรหลอก<br>  
+                        ✅ ฝึกซ้ำด่านที่อ่อน  
+                    </div>  
+                    </div>`;  
+            } else {  
+                dialogHTML = `<div style="text-align:left; font-size:14px; line-height:1.8;">  
+                    <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px; text-align:center; border:3px solid #1976d2;">  
+                        <b style="color:#1976d2; font-size:20px;">🎮 ภาพรวมการเล่น "ตะลุยป่าไตรยางศ์"</b><br>  
+                        <span style="color:#333; font-size:16px;">ผจญภัยผ่าน 4 ภารกิจหลัก + 1 ด่านบอสไฟต์ รวบรวมเพชรสูงสุด <b style="color:#ff6f00;">65 เม็ด</b></span>  
+                    </div>
+  
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">  
+                        <div style="background:#fff3e0; padding:15px; border-radius:10px; border-left:5px solid #ff9800;">  
+                            <b style="color:#e65100; font-size:16px;">📌 ภารกิจที่ 1: ป่าดงดิบ</b><br>  
+                            <b style="color:#d84315;">🎯 อักษรกลาง</b><br><br>  
+                            <b>เป้าหมาย:</b> เก็บอักษรกลางให้ได้ <b>10 ตัวขึ้นไป</b><br>  
+                            <b>เวลา:</b> 4 นาที<br>  
+                            <b>จำนวนร่วง:</b> 55 ตัว<br>  
+                            &nbsp;&nbsp;• ถูก 20 ตัว + หลอก 35 ตัว<br>  
+                            <b>รางวัล:</b> <span style="color:#ff6f00;">💎 20 เพชร</span><br><br>  
+                            <b>อักษรกลาง:</b> ก จ ด ต บ ป อ ฎ ฏ  
+                        </div>
+  
+                        <div style="background:#f3e5f5; padding:15px; border-radius:10px; border-left:5px solid #9c27b0;">  
+                            <b style="color:#6a1b9a; font-size:16px;">📌 ภารกิจที่ 2: ถ้ำลึกลับ</b><br>  
+                            <b style="color:#7b1fa2;">🎯 อักษรสูง</b><br><br>  
+                            <b>เป้าหมาย:</b> ใส่อักษรสูงลงตะกร้า <b>10 ตัวขึ้นไป</b><br>  
+                            <b>เวลา:</b> 4 นาที<br>  
+                            <b>จำนวนร่วง:</b> 55 ตัว<br>  
+                            &nbsp;&nbsp;• ถูก 20 ตัว + หลอก 35 ตัว<br>  
+                            <b>รางวัล:</b> <span style="color:#ff6f00;">💎 20 เพชร</span><br>  
+                            <b>พิเศษ:</b> 🧺 มีตะกร้ารับของ<br><br>  
+                            <b>อักษรสูง:</b> ข ฃ ฉ ฐ ถ ผ ฝ ศ ษ ส ห  
+                        </div>  
+                    </div>
+  
+                    <div style="background:#e8f5e9; padding:15px; border-radius:10px; margin-bottom:15px; border:3px solid #4caf50;">  
+                        <b style="color:#2e7d32; font-size:16px;">📌 ภารกิจที่ 3: ค่ายริมน้ำ (แบ่งออกเป็น 2 รอบ)</b><br><br>  
+                          
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">  
+                            <div style="background:white; padding:12px; border-radius:8px; border:2px solid #00897b;">  
+                                <b style="color:#00897b;">🔹 รอบที่ 1: อักษรต่ำเดี่ยว</b><br>  
+                                <b>เป้าหมาย:</b> เก็บ <b>10 ตัวขึ้นไป</b><br>  
+                                <b>เวลา:</b> 4 นาที<br>  
+                                <b>จำนวนร่วง:</b> 55 ตัว<br>  
+                                <b>รางวัล:</b> <span style="color:#ff6f00;">💎 10 เพชร</span><br><br>  
+                                <b>ต่ำเดี่ยว:</b> ง ญ ณ น ม ย ร ล ว ฬ  
+                            </div>
+  
+                            <div style="background:white; padding:12px; border-radius:8px; border:2px solid #00897b;">  
+                                <b style="color:#00897b;">🔹 รอบที่ 2: อักษรต่ำคู่</b><br>  
+                                <b>เป้าหมาย:</b> ใส่ตะกร้า <b>10 ตัวขึ้นไป</b><br>  
+                                <b>เวลา:</b> 4 นาที<br>  
+                                <b>จำนวนร่วง:</b> 55 ตัว<br>  
+                                <b>รางวัล:</b> <span style="color:#ff6f00;">💎 10 เพชร</span><br>  
+                                <b>พิเศษ:</b> 🧺 มีตะกร้า<br><br>  
+                                <b>ต่ำคู่:</b> ค ฅ ฆ ช ซ ฌ ฑ ฒ ท ธ พ ฟ ภ ฮ  
+                            </div>  
+                        </div>  
+                    </div>
+  
+                    <div style="background:#ffebee; padding:15px; border-radius:10px; margin-bottom:15px; border:3px solid #f44336;">  
+                        <b style="color:#c62828; font-size:16px;">📌 ภารกิจที่ 4: วิหารโบราณ (บอสไฟต์รวม)</b><br><br>  
+                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:15px;">  
+                            <div>  
+                                <b>เป้าหมาย:</b> ตอบคำถามถูก <b>22 ข้อขึ้นไป</b> (จาก 44 ข้อ)<br>  
+                                <b>เวลา:</b> 10 นาที<br>  
+                                <b>รูปแบบ:</b> ตอบคำถาม Multiple Choice<br>  
+                                <b>ระดับความยาก:</b> ง่าย / ปานกลาง / ยาก<br>  
+                                <b>รางวัล:</b> <span style="color:#ff6f00;">💎 สูงสุด 5 เพชร</span><br>  
+                                <b>พิเศษ:</b> 💡 มีระบบ Hint ช่วยเหลือ  
+                            </div>  
+                            <div style="background:white; padding:10px; border-radius:5px;">  
+                                <b style="color:#1976d2;">⭐ เกณฑ์คะแนน</b><br>  
+                                • ≥80% (36+)<br>  
+                                &nbsp;&nbsp;= ⭐⭐⭐ (5 เพชร)<br>  
+                                • ≥55% (24-35)<br>  
+                                &nbsp;&nbsp;= ⭐⭐ (4 เพชร)<br>  
+                                • ≥50% (22-23)<br>  
+                                &nbsp;&nbsp;= ⭐ (3 เพชร)  
+                            </div>  
+                        </div>  
+                    </div>
+  
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">  
+                        <div style="background:#fff9c4; padding:15px; border-radius:10px; border:3px dashed #f57f17;">  
+                            <b style="color:#f57f17; font-size:16px;">🏆 สรุปรางวัลทั้งหมด</b><br><br>  
+                            📌 ภารกิจ 1 (อักษรกลาง): <b>20 เพชร</b><br>  
+                            📌 ภารกิจ 2 (อักษรสูง): <b>20 เพชร</b><br>  
+                            📌 ภารกิจ 3 (อักษรต่ำ): <b>20 เพชร</b><br>  
+                            &nbsp;&nbsp;&nbsp;&nbsp;• ต่ำเดี่ยว: 10 เพชร<br>  
+                            &nbsp;&nbsp;&nbsp;&nbsp;• ต่ำคู่: 10 เพชร<br>  
+                            📌 บอสไฟต์: <b>5 เพชร</b><br><br>  
+                            <b style="color:#2e7d32; font-size:18px;">💎 รวมทั้งสิ้น: 65 เพชร</b>  
+                        </div>
+  
+                        <div style="background:#e1f5fe; padding:15px; border-radius:10px; border:3px solid #0277bd;">  
+                            <b style="color:#01579b; font-size:16px;">💡 เคล็ดลับความสำเร็จ</b><br><br>  
+                            ✅ จดจำลักษณะอักษรให้ชัดเจน<br>  
+                            ✅ ใช้เวลาอย่างชาญฉลาด<br>  
+                            ✅ ระวังอักษรหลอกที่คล้ายกัน<br>  
+                            ✅ ทบทวนด่านที่ทำได้ไม่ดี<br>  
+                            ✅ ฝึกซ้ำจนเกิดความชำนาญ<br>  
+                            ✅ ใช้ Hint เมื่อจำเป็น  
+                        </div>  
+                    </div>  
+                    </div>`;  
             }
-
-            Swal.fire({
-                title: '📖 คู่มือการเล่น',
-                html: dialogHTML,
-                confirmButtonColor: '#8b5a2b',
-                width: isMobile ? '95%' : '700px'
-            });
+  
+            Swal.fire({  
+                title: '📖 คู่มือการเล่นฉบับสมบูรณ์',  
+                html: dialogHTML,  
+                confirmButtonColor: '#8b5a2b',  
+                confirmButtonText: 'เข้าใจแล้ว เริ่มเลย!',  
+                width: isMobile ? '95%' : '900px',  
+                customClass: {  
+                    popup: 'manual-popup'  
+                }  
+            });  
         }
-
-        // ================= Variables =================
-        let isMuted = false;
-        let playerName = "", currentScore = 0, totalDiamonds = 0, gameTimer, spawnInterval, itemsSpawned = 0;
-        let storyProgress = 0; 
-        let scoresData = { m1: 0, m2: 0, m31: 0, m32: 0, m4: 0 };
-        let layoutCoords = []; 
-        let comboCount = 0, maxCombo = 0;
-        let hintUsed = false;
-        let activePowerups = {};
-        let scoreMultiplier = 1;
-        let timeBonus = 0;
-        let gameStats = { totalTime: 0, levelsPassed: 0, bestCombo: 0, totalDiamonds: 0 };
-        let currentDropList = []; // Array เก็บอักษรที่จะดรอป 55 ตัว
-        let quizIndex = 0;
-        
-        let badges = {
-            first_game: { icon: '🎮', name: 'เกมแรก', rarity: 'common', unlocked: false },
-            combo_master: { icon: '🔥', name: 'Combo Master (10+)', rarity: 'rare', unlocked: false },
-            perfect_score: { icon: '💯', name: 'Perfect (35 เพชร)', rarity: 'legend', unlocked: false },
-            speed_demon: { icon: '⚡', name: 'Speed (2+ นาที)', rarity: 'epic', unlocked: false },
-            powerup_collector: { icon: '⚙️', name: 'Power Collector', rarity: 'uncommon', unlocked: false },
-            all_stages: { icon: '🏆', name: 'ทั้ง 5 ด่าน', rarity: 'epic', unlocked: false },
-            expert: { icon: '🎓', name: 'Expert Mode', rarity: 'rare', unlocked: false }
-        };
-        
-        const midCons = ['ก','จ','ด','ต','บ','ป','อ','ฎ','ฏ'];
-        const highCons = ['ข','ฃ','ฉ','ฐ','ถ','ผ','ฝ','ศ','ษ','ส','ห'];
-        const lowSingle = ['ง','ญ','ณ','น','ม','ย','ร','ล','ว','ฬ'];
-        const lowDouble = ['ค','ฅ','ฆ','ช','ซ','ฌ','ฑ','ฒ','ท','ธ','พ','ฟ','ภ','ฮ'];
+  
+        // ================= Variables =================  
+        let isMuted = false;  
+        let playerName = "", currentScore = 0, totalDiamonds = 0, gameTimer, spawnInterval, itemsSpawned = 0;  
+        let storyProgress = 0;   
+        let scoresData = { m1: 0, m2: 0, m31: 0, m32: 0, m4: 0 };  
+        let layoutCoords = [];   
+        let comboCount = 0, maxCombo = 0;  
+        let hintUsed = false;  
+        let activePowerups = {};  
+        let scoreMultiplier = 1;  
+        let timeBonus = 0;  
+        let gameStats = { totalTime: 0, levelsPassed: 0, bestCombo: 0, totalDiamonds: 0 };  
+        let currentDropList = []; // Array เก็บอักษรที่จะดรอป 55 ตัว  
+        let quizIndex = 0;  
+          
+        let badges = {  
+            first_game: { icon: '🎮', name: 'เกมแรก', rarity: 'common', unlocked: false },  
+            combo_master: { icon: '🔥', name: 'Combo Master (10+)', rarity: 'rare', unlocked: false },  
+            perfect_score: { icon: '💯', name: 'Perfect (65 เพชร)', rarity: 'legend', unlocked: false },  
+            speed_demon: { icon: '⚡', name: 'Speed (2+ นาที)', rarity: 'epic', unlocked: false },  
+            powerup_collector: { icon: '⚙️', name: 'Power Collector', rarity: 'uncommon', unlocked: false },  
+            all_stages: { icon: '🏆', name: 'ทั้ง 5 ด่าน', rarity: 'epic', unlocked: false },  
+            expert: { icon: '🎓', name: 'Expert Mode', rarity: 'rare', unlocked: false }  
+        };  
+          
+        const midCons = ['ก','จ','ด','ต','บ','ป','อ','ฎ','ฏ'];  
+        const highCons = ['ข','ฃ','ฉ','ฐ','ถ','ผ','ฝ','ศ','ษ','ส','ห'];  
+        const lowSingle = ['ง','ญ','ณ','น','ม','ย','ร','ล','ว','ฬ'];  
+        const lowDouble = ['ค','ฅ','ฆ','ช','ซ','ฌ','ฑ','ฒ','ท','ธ','พ','ฟ','ภ','ฮ'];  
         const allCons = [...midCons, ...highCons, ...lowSingle, ...lowDouble];
-
-        const quizDataAll = [
-            // ก
-            {w:"ไก่", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/2748/2748521.png", difficulty:"easy", hint:"สัตว์ที่ร้องโครอก"},
-            {w:"กง", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"เครื่องดนตรี"},
-            {w:"กะ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924515.png", difficulty:"medium", hint:"ผ่านไป"},
-            {w:"กำ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924516.png", difficulty:"easy", hint:"มือหมัด"},
-            // ข
-            {w:"ไข่", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ของไก่ออก"},
-            {w:"ขนม", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/1995/1995506.png", difficulty:"easy", hint:"อาหารหวาน"},
-            {w:"ขว้าง", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"โยนออกไป"},
-            {w:"ขี่", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"นั่งบน"},
-            // ค
-            {w:"ควาย", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/1046/1046781.png", difficulty:"easy", hint:"สัตว์บ้านใหญ่"},
-            {w:"คน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"มนุษย์"},
-            {w:"คัน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"อยากขูด"},
-            {w:"คิด", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ใจคิด"},
-            // ง
-            {w:"งู", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/1046/1046783.png", difficulty:"easy", hint:"สัตว์คลาน"},
-            {w:"งาน", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"การทำงาน"},
-            {w:"งั้น", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ดังนั้น"},
-            {w:"งาม", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"สวย"},
-            // จ
-            {w:"จาน", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/3050/3050159.png", difficulty:"easy", hint:"ภาชนะใส่อาหาร"},
-            {w:"จน", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ยากจน"},
-            {w:"จำ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"จดจำ"},
-            {w:"จอ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"จอภาพ"},
-            // ฉ
-            {w:"ฉัน", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ตัวเอง"},
-            {w:"ฉิ่ง", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/3531/3531653.png", difficulty:"medium", hint:"เครื่องดนตรี"},
-            {w:"ฉลาด", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ฉลาด"},
-            {w:"ฉีด", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ฉีดยา"},
-            // ช
-            {w:"ช้าง", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/1046/1046777.png", difficulty:"easy", hint:"สัตว์มีงา"},
-            {w:"ชาติ", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ประเทศ"},
-            {w:"ชน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ชนกัน"},
-            {w:"ชรา", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"แก่เฒ่า"},
-            // ซ
-            {w:"ซ้อน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924516.png", difficulty:"medium", hint:"ซ้อนกัน"},
-            {w:"ซื้อ", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ซื้อของ"},
-            {w:"ซ่อม", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"แก้ซ่อม"},
-            {w:"ซาด", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"hard", hint:"เศร้า"},
-            // ด
-            {w:"เด็ก", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/5556/5556468.png", difficulty:"easy", hint:"บุคคลเล็ก"},
-            {w:"ดิน", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ดินแดน"},
-            {w:"ดับ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ดับไฟ"},
-            {w:"ดี", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ดีเยี่ยม"},
-            // ท
-            {w:"ทหาร", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/747/747376.png", difficulty:"easy", hint:"ผู้ป้องกัน"},
-            {w:"ทำ", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"กระทำ"},
-            {w:"ทาง", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"เส้นทาง"},
-            {w:"ทาน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"บริจาค"},
-            // น
-            {w:"หนู", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/1046/1046782.png", difficulty:"easy", hint:"สัตว์เล็ก"},
-            {w:"นก", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"สัตว์บิน"},
-            {w:"นม", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"นมสด"},
-            {w:"นิ่ม", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"นุ่มนวล"}
+  
+        const quizDataAll = [  
+            // ก  
+            {w:"ไก่", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/2748/2748521.png", difficulty:"easy", hint:"สัตว์ที่ร้องโครอก"},  
+            {w:"กง", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"เครื่องดนตรี"},  
+            {w:"กะ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924515.png", difficulty:"medium", hint:"ผ่านไป"},  
+            {w:"กำ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924516.png", difficulty:"easy", hint:"มือหมัด"},  
+            // ข  
+            {w:"ไข่", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ของไก่ออก"},  
+            {w:"ขนม", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/1995/1995506.png", difficulty:"easy", hint:"อาหารหวาน"},  
+            {w:"ขว้าง", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"โยนออกไป"},  
+            {w:"ขี่", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"นั่งบน"},  
+            // ค  
+            {w:"ควาย", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/1046/1046781.png", difficulty:"easy", hint:"สัตว์บ้านใหญ่"},  
+            {w:"คน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"มนุษย์"},  
+            {w:"คัน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"อยากขูด"},  
+            {w:"คิด", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ใจคิด"},  
+            // ง  
+            {w:"งู", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/1046/1046783.png", difficulty:"easy", hint:"สัตว์คลาน"},  
+            {w:"งาน", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"การทำงาน"},  
+            {w:"งั้น", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ดังนั้น"},  
+            {w:"งาม", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"สวย"},  
+            // จ  
+            {w:"จาน", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/3050/3050159.png", difficulty:"easy", hint:"ภาชนะใส่อาหาร"},  
+            {w:"จน", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ยากจน"},  
+            {w:"จำ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"จดจำ"},  
+            {w:"จอ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"จอภาพ"},  
+            // ฉ  
+            {w:"ฉัน", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ตัวเอง"},  
+            {w:"ฉิ่ง", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/3531/3531653.png", difficulty:"medium", hint:"เครื่องดนตรี"},  
+            {w:"ฉลาด", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ฉลาด"},  
+            {w:"ฉีด", a:"สูง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ฉีดยา"},  
+            // ช  
+            {w:"ช้าง", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/1046/1046777.png", difficulty:"easy", hint:"สัตว์มีงา"},  
+            {w:"ชาติ", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ประเทศ"},  
+            {w:"ชน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ชนกัน"},  
+            {w:"ชรา", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"แก่เฒ่า"},  
+            // ซ  
+            {w:"ซ้อน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924516.png", difficulty:"medium", hint:"ซ้อนกัน"},  
+            {w:"ซื้อ", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ซื้อของ"},  
+            {w:"ซ่อม", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"แก้ซ่อม"},  
+            {w:"ซาด", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"hard", hint:"เศร้า"},  
+            // ด  
+            {w:"เด็ก", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/5556/5556468.png", difficulty:"easy", hint:"บุคคลเล็ก"},  
+            {w:"ดิน", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ดินแดน"},  
+            {w:"ดับ", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"ดับไฟ"},  
+            {w:"ดี", a:"กลาง", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"ดีเยี่ยม"},  
+            // ท  
+            {w:"ทหาร", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/747/747376.png", difficulty:"easy", hint:"ผู้ป้องกัน"},  
+            {w:"ทำ", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"กระทำ"},  
+            {w:"ทาง", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"เส้นทาง"},  
+            {w:"ทาน", a:"ต่ำคู่", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"บริจาค"},  
+            // น  
+            {w:"หนู", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/1046/1046782.png", difficulty:"easy", hint:"สัตว์เล็ก"},  
+            {w:"นก", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"สัตว์บิน"},  
+            {w:"นม", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"easy", hint:"นมสด"},  
+            {w:"นิ่ม", a:"ต่ำเดี่ยว", img:"https://cdn-icons-png.flaticon.com/512/924/924514.png", difficulty:"medium", hint:"นุ่มนวล"}  
         ];
-
+  
         const quizData = quizDataAll.slice(0, 44);
-
-        function getQuizByType(type) {
-            switch(type) {
-                case 'high': return quizDataAll.filter(q => q.a === 'สูง');
-                case 'mid': return quizDataAll.filter(q => q.a === 'กลาง');
-                case 'low-single': return quizDataAll.filter(q => q.a === 'ต่ำเดี่ยว');
-                case 'low-double': return quizDataAll.filter(q => q.a === 'ต่ำคู่');
-                default: return quizDataAll;
-            }
+  
+        function getQuizByType(type) {  
+            switch(type) {  
+                case 'high': return quizDataAll.filter(q => q.a === 'สูง');  
+                case 'mid': return quizDataAll.filter(q => q.a === 'กลาง');  
+                case 'low-single': return quizDataAll.filter(q => q.a === 'ต่ำเดี่ยว');  
+                case 'low-double': return quizDataAll.filter(q => q.a === 'ต่ำคู่');  
+                default: return quizDataAll;  
+            }  
         }
-
-        function initAudio() {
-            ['sfx-click', 'sfx-chest', 'sfx-correct', 'sfx-wrong', 'sfx-drop', 'sfx-achievement', 'bgm-m1', 'bgm-m2', 'bgm-m3'].forEach(id => {
-                let el = document.getElementById(id);
-                if(el) { el.volume = 0; el.play().catch(()=>{}); el.pause(); el.currentTime = 0; el.volume = 1; }
-            });
+  
+        function initAudio() {  
+            ['sfx-click', 'sfx-chest', 'sfx-correct', 'sfx-wrong', 'sfx-drop', 'sfx-achievement', 'bgm-m1', 'bgm-m2', 'bgm-m3'].forEach(id => {  
+                let el = document.getElementById(id);  
+                if(el) { el.volume = 0; el.play().catch(()=>{}); el.pause(); el.currentTime = 0; el.volume = 1; }  
+            });  
+        }  
+        function playSfx(id) {   
+            if(isMuted) return;  
+            let a = document.getElementById(id); if(a){ a.currentTime=0; a.play().catch(()=>{}); }   
+        }  
+        function stopAllBgm() { ['bgm-m1', 'bgm-m2', 'bgm-m3'].forEach(id => { let a = document.getElementById(id); if(a) { a.pause(); a.currentTime = 0; }}); }  
+        function toggleMusic() {  
+            isMuted = !isMuted;  
+            document.getElementById('music-btn').innerText = isMuted ? "🔇" : "🎵";  
+            if(isMuted) stopAllBgm();  
         }
-        function playSfx(id) { 
-            if(isMuted) return;
-            let a = document.getElementById(id); if(a){ a.currentTime=0; a.play().catch(()=>{}); } 
-        }
-        function stopAllBgm() { ['bgm-m1', 'bgm-m2', 'bgm-m3'].forEach(id => { let a = document.getElementById(id); if(a) { a.pause(); a.currentTime = 0; }}); }
-        function toggleMusic() {
-            isMuted = !isMuted;
-            document.getElementById('music-btn').innerText = isMuted ? "🔇" : "🎵";
-            if(isMuted) stopAllBgm();
-        }
-
+  
         function switchScene(id) { document.querySelectorAll('.scene').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-
-        function drawMap() {
-            let isPortrait = window.innerHeight > window.innerWidth;
-            layoutCoords = isPortrait ? [
-                {x: 50, y: 88}, {x: 70, y: 68}, {x: 30, y: 48}, {x: 70, y: 28}, {x: 30, y: 12}  
-            ] : [
-                {x: 10, y: 80}, {x: 30, y: 65}, {x: 50, y: 50}, {x: 70, y: 35}, {x: 90, y: 20}  
-            ];
-            for(let i=0; i<5; i++) {
-                let node = document.getElementById('node-'+i);
-                node.style.left = layoutCoords[i].x + '%';
-                node.style.top = layoutCoords[i].y + '%';
-            }
-            let pointsString = layoutCoords.map(p => `${p.x},${p.y}`).join(' ');
-            document.getElementById('svg-line').setAttribute('points', pointsString);
-            if(document.getElementById('scene-map').classList.contains('active')) updateAvatarPosition();
-        }
+  
+        function drawMap() {  
+            let isPortrait = window.innerHeight > window.innerWidth;  
+            layoutCoords = isPortrait ? [  
+                {x: 50, y: 88}, {x: 70, y: 68}, {x: 30, y: 48}, {x: 70, y: 28}, {x: 30, y: 12}    
+            ] : [  
+                {x: 10, y: 80}, {x: 30, y: 65}, {x: 50, y: 50}, {x: 70, y: 35}, {x: 90, y: 20}    
+            ];  
+            for(let i=0; i<5; i++) {  
+                let node = document.getElementById('node-'+i);  
+                node.style.left = layoutCoords[i].x + '%';  
+                node.style.top = layoutCoords[i].y + '%';  
+            }  
+            let pointsString = layoutCoords.map(p => `${p.x},${p.y}`).join(' ');  
+            document.getElementById('svg-line').setAttribute('points', pointsString);  
+            if(document.getElementById('scene-map').classList.contains('active')) updateAvatarPosition();  
+        }  
         window.onresize = drawMap; 
-
-        function goHome() {
-            storyProgress = 0;
-            let leftMenu = document.getElementById('left-menu-container');
-            if(leftMenu) leftMenu.style.setProperty('display', 'none', 'important');
-            document.getElementById('badge-container').style.setProperty('display', 'none', 'important');
-            switchScene('scene-title');
+  
+        function goHome() {  
+            storyProgress = 0;  
+            let leftMenu = document.getElementById('left-menu-container');  
+            if(leftMenu) leftMenu.style.setProperty('display', 'none', 'important');  
+            document.getElementById('badge-container').style.setProperty('display', 'none', 'important');  
+            switchScene('scene-title');  
         }
-
-        function goToCharSelect() {
-            initAudio(); 
-            playerName = document.getElementById('input-name').value;
-            if(!playerName) { alert('พิมพ์ชื่อก่อนนะคะ!'); return; }
-            playSfx('sfx-click');
-            unlockBadge('first_game');
-            switchScene('scene-char');
+  
+        function goToCharSelect() {  
+            initAudio();   
+            playerName = document.getElementById('input-name').value;  
+            if(!playerName) { alert('พิมพ์ชื่อก่อนนะคะ!'); return; }  
+            playSfx('sfx-click');  
+            unlockBadge('first_game');  
+            switchScene('scene-char');  
         }
-
-        function enterMap(gender) {
-            playSfx('sfx-click');
-            
-            // Hardcode URL ภาพคู่หู
-            const urlBoy = 'url("https://i.postimg.cc/Wb5dHjNY/d-sin-th-y-ngmi-di-t-ngch-x-(22).png")';
-            const urlGirl = 'url("https://i.postimg.cc/YqRFBY3z/d-sin-th-y-ngmi-di-t-ngch-x-(21).png")';
-            document.getElementById('map-avatar').style.backgroundImage = (gender === 'boy') ? urlBoy : urlGirl;
-            
-            // แสดงเมนูด้านซ้ายเมื่อเข้าสู่แผนที่
-            let leftMenu = document.getElementById('left-menu-container');
+  
+        function enterMap(gender) {  
+            playSfx('sfx-click');  
+              
+            // Hardcode URL ภาพคู่หู  
+            const urlBoy = 'url("https://i.postimg.cc/Wb5dHjNY/d-sin-th-y-ngmi-di-t-ngch-x-(22).png")';  
+            const urlGirl = 'url("https://i.postimg.cc/YqRFBY3z/d-sin-th-y-ngmi-di-t-ngch-x-(21).png")';  
+            document.getElementById('map-avatar').style.backgroundImage = (gender === 'boy') ? urlBoy : urlGirl;  
+              
+            // แสดงเมนูด้านซ้ายเมื่อเข้าสู่แผนที่  
+            let leftMenu = document.getElementById('left-menu-container');  
             if(leftMenu) leftMenu.style.setProperty('display', 'flex', 'important');
-
-            if(Object.values(badges).some(b => b.unlocked)) {
-                document.getElementById('badge-container').style.setProperty('display', 'flex', 'important');
-            }
-            
-            drawMap(); 
-            switchScene('scene-map');
-            updateAvatarPosition(); 
-            
-            setTimeout(() => {
-                showPopupDialogue(0, [`สวัสดี ${playerName}!`, `เราอยู่ที่จุดเริ่มต้นแล้ว`, `พร้อมไป "ป่าดงดิบ" กันหรือยัง?`]);
-            }, 800);
+  
+            if(Object.values(badges).some(b => b.unlocked)) {  
+                document.getElementById('badge-container').style.setProperty('display', 'flex', 'important');  
+            }  
+              
+            drawMap();   
+            switchScene('scene-map');  
+            updateAvatarPosition();   
+              
+            setTimeout(() => {  
+                showPopupDialogue(0, [`สวัสดี ${playerName}!`, `เราอยู่ที่จุดเริ่มต้นแล้ว`, `พร้อมไป "ป่าดงดิบ" กันหรือยัง?`]);  
+            }, 800);  
         }
-
-        function updateAvatarPosition() {
-            let targetNode = storyProgress >= 5 ? 4 : storyProgress;
-            let avatar = document.getElementById('map-avatar');
-            avatar.style.left = layoutCoords[targetNode].x + '%';
-            avatar.style.top = layoutCoords[targetNode].y + '%';
+  
+        function updateAvatarPosition() {  
+            let targetNode = storyProgress >= 5 ? 4 : storyProgress;  
+            let avatar = document.getElementById('map-avatar');  
+            avatar.style.left = layoutCoords[targetNode].x + '%';  
+            avatar.style.top = layoutCoords[targetNode].y + '%';  
         }
-
-        function resumeStory() {
-            stopAllBgm();
-            document.querySelector('.manual-link').classList.remove('hidden');
-            document.getElementById('dialogue-popup').style.display = 'none';
-            
-            // ตอนอยู่หน้า Map ให้โชว์เมนูเสมอ
-            let leftMenu = document.getElementById('left-menu-container');
-            if(leftMenu) leftMenu.style.setProperty('display', 'flex', 'important');
-            
-            // โชว์ปุ่ม 2 อันที่เหลือกลับมา (เผื่อถูกซ่อนไปตอนเล่นเกม)
-            let btnRestart = document.getElementById('new-restart-btn');
-            if(btnRestart) btnRestart.style.setProperty('display', 'flex', 'important');
-            let btnChar = document.getElementById('new-char-btn');
+  
+        function resumeStory() {  
+            stopAllBgm();  
+            document.querySelector('.manual-link').classList.remove('hidden');  
+            document.getElementById('dialogue-popup').style.display = 'none';  
+              
+            // ตอนอยู่หน้า Map ให้โชว์เมนูเสมอ  
+            let leftMenu = document.getElementById('left-menu-container');  
+            if(leftMenu) leftMenu.style.setProperty('display', 'flex', 'important');  
+              
+            // โชว์ปุ่ม 2 อันที่เหลือกลับมา (เผื่อถูกซ่อนไปตอนเล่นเกม)  
+            let btnRestart = document.getElementById('new-restart-btn');  
+            if(btnRestart) btnRestart.style.setProperty('display', 'flex', 'important');  
+            let btnChar = document.getElementById('new-char-btn');  
             if(btnChar) btnChar.style.setProperty('display', 'flex', 'important');
-
-            if(Object.values(badges).some(b => b.unlocked)) {
-                document.getElementById('badge-container').style.setProperty('display', 'flex', 'important');
+  
+            if(Object.values(badges).some(b => b.unlocked)) {  
+                document.getElementById('badge-container').style.setProperty('display', 'flex', 'important');  
             }
-
+  
             updateAvatarPosition(); 
-
+  
             let targetNode = storyProgress >= 5 ? 4 : storyProgress;
-
-            setTimeout(() => {
-                let msgs = [];
-                // ภารกิจ 3 ถูกแยกเป็น 3.1 ต่ำเดี่ยว (storyProgress=3) และ 3.2 ต่ำคู่ (storyProgress=4)
-                if(storyProgress === 1) msgs = [`ถึงป่าดงดิบแล้ว!`, `ภารกิจที่ 1 อักษรกลาง รออยู่`];
-                if(storyProgress === 2) msgs = [`ถึงถ้ำลึกลับแล้ว!`, `ภารกิจที่ 2 อักษรสูง ไปกันเลย!`];
-                if(storyProgress === 3) msgs = [`ถึงค่ายริมน้ำ!`, `เริ่มภารกิจที่ 3 "อักษรต่ำเดี่ยว" ก่อน`];
-                if(storyProgress === 4) msgs = [`ค่ายริมน้ำ ภารกิจต่อเนื่อง!`, `ลุยรอบสอง "อักษรต่ำคู่"`];
+  
+            setTimeout(() => {  
+                let msgs = [];  
+                // ภารกิจ 3 ถูกแยกเป็น 3.1 ต่ำเดี่ยว (storyProgress=3) และ 3.2 ต่ำคู่ (storyProgress=4)  
+                if(storyProgress === 1) msgs = [`ถึงป่าดงดิบแล้ว!`, `ภารกิจที่ 1 อักษรกลาง รออยู่`];  
+                if(storyProgress === 2) msgs = [`ถึงถ้ำลึกลับแล้ว!`, `ภารกิจที่ 2 อักษรสูง ไปกันเลย!`];  
+                if(storyProgress === 3) msgs = [`ถึงค่ายริมน้ำ!`, `เริ่มภารกิจที่ 3 "อักษรต่ำเดี่ยว" ก่อน`];  
+                if(storyProgress === 4) msgs = [`ค่ายริมน้ำ ภารกิจต่อเนื่อง!`, `ลุยรอบสอง "อักษรต่ำคู่"`];  
                 if(storyProgress === 5) msgs = [`ถึงวิหารโบราณแล้ว!`, `ลุยคำถามบอส 44 ข้อ 10 นาที!`];
-
-                if(msgs.length > 0) {
-                    showPopupDialogue(targetNode, msgs, () => {
-                        prepareMission(); 
-                    });
-                }
-            }, 1600);
+  
+                if(msgs.length > 0) {  
+                    showPopupDialogue(targetNode, msgs, () => {  
+                        prepareMission();   
+                    });  
+                }  
+            }, 1600);  
         }
-
-        let dialogueStack = [], dialogueCb = null;
-        function showPopupDialogue(nodeIndex, list, callback) {
-            dialogueStack = list; dialogueCb = callback;
-            let popup = document.getElementById('dialogue-popup');
-            popup.style.display = 'flex'; 
-            popup.style.left = layoutCoords[nodeIndex].x + '%';
-            popup.style.top = layoutCoords[nodeIndex].y + '%';
-            nextDialogue();
+  
+        let dialogueStack = [], dialogueCb = null;  
+        function showPopupDialogue(nodeIndex, list, callback) {  
+            dialogueStack = list; dialogueCb = callback;  
+            let popup = document.getElementById('dialogue-popup');  
+            popup.style.display = 'flex';   
+            popup.style.left = layoutCoords[nodeIndex].x + '%';  
+            popup.style.top = layoutCoords[nodeIndex].y + '%';  
+            nextDialogue();  
         }
-
-        function nextDialogue() {
-            playSfx('sfx-click');
-            if(dialogueStack.length === 0) {
-                document.getElementById('dialogue-popup').style.display = 'none';
-                if(dialogueCb) dialogueCb();
-                return;
-            }
-            document.getElementById('dialogue-text').innerHTML = dialogueStack.shift();
-            
-            if(dialogueStack.length === 0 && storyProgress === 0) {
-                dialogueCb = () => { storyProgress = 1; resumeStory(); }; 
-            }
+  
+        function nextDialogue() {  
+            playSfx('sfx-click');  
+            if(dialogueStack.length === 0) {  
+                document.getElementById('dialogue-popup').style.display = 'none';  
+                if(dialogueCb) dialogueCb();  
+                return;  
+            }  
+            document.getElementById('dialogue-text').innerHTML = dialogueStack.shift();  
+              
+            if(dialogueStack.length === 0 && storyProgress === 0) {  
+                dialogueCb = () => { storyProgress = 1; resumeStory(); };   
+            }  
         }
-
-        function prepareMission() {
-            switchScene('scene-game');
-            document.querySelector('.manual-link').classList.add('hidden');
-            document.getElementById('quiz-container').style.display = 'none';
-            document.getElementById('basket').style.display = 'none';
-            let chest = document.getElementById('game-chest');
-            chest.style.backgroundImage = 'var(--chest-closed)';
-            chest.style.display = 'block';
+  
+        function prepareMission() {  
+            switchScene('scene-game');  
+            document.querySelector('.manual-link').classList.add('hidden');  
+            document.getElementById('quiz-container').style.display = 'none';  
+            document.getElementById('basket').style.display = 'none';  
+            let chest = document.getElementById('game-chest');  
+            chest.style.backgroundImage = 'var(--chest-closed)';  
+            chest.style.display = 'block';  
         }
-
-        function openChest() {
-            let sfxChest = document.getElementById('sfx-chest');
-            if(!isMuted) { sfxChest.currentTime = 0; sfxChest.play(); }
-            
-            let chest = document.getElementById('game-chest');
-            chest.style.backgroundImage = 'var(--chest-open)';
-            
-            setTimeout(() => {
-                chest.style.display = 'none';
-                let mapMsg = "";
-                // จำนวนเป้าหมาย 20 ข้อ (รวมร่วง 55) สำหรับภารกิจ 1-4
-                if(storyProgress === 1) mapMsg = "ไก่ จิก เด็ก ตาย (เด็ก ตาย) บน ปาก โอ่ง<br><span style='color:red;'>(หาอักษรกลาง 20 ตัว)</span>";
-                if(storyProgress === 2) mapMsg = "ผี ฝาก ถุง ข้าว สาร ให้ ฉัน ฐาน ฃวด<br><span style='color:red;'>(ใส่อักษรสูงลงตะกร้า 20 ตัว)</span>";
-                if(storyProgress === 3) mapMsg = "งู ใหญ่ นอน อยู่ ณ ริม วัด โม ฬี โลก<br><span style='color:red;'>(หาอักษรต่ำเดี่ยว 20 ตัว)</span>";
-                if(storyProgress === 4) mapMsg = "พ่อ ค้า ฟัน ทอง ซื้อ ช้าง ฮูก<br><span style='color:red;'>(ใส่อักษรต่ำคู่ลงตะกร้า 20 ตัว)</span>";
+  
+        function openChest() {  
+            let sfxChest = document.getElementById('sfx-chest');  
+            if(!isMuted) { sfxChest.currentTime = 0; sfxChest.play(); }  
+              
+            let chest = document.getElementById('game-chest');  
+            chest.style.backgroundImage = 'var(--chest-open)';  
+              
+            setTimeout(() => {  
+                chest.style.display = 'none';  
+                let mapMsg = "";  
+                // จำนวนเป้าหมาย 20 ข้อ (รวมร่วง 55) สำหรับภารกิจ 1-4  
+                if(storyProgress === 1) mapMsg = "ไก่ จิก เด็ก ตาย (เด็ก ตาย) บน ปาก โอ่ง<br><span style='color:red;'>(หาอักษรกลาง 20 ตัว)</span>";  
+                if(storyProgress === 2) mapMsg = "ผี ฝาก ถุง ข้าว สาร ให้ ฉัน ฐาน ฃวด<br><span style='color:red;'>(ใส่อักษรสูงลงตะกร้า 20 ตัว)</span>";  
+                if(storyProgress === 3) mapMsg = "งู ใหญ่ นอน อยู่ ณ ริม วัด โม ฬี โลก<br><span style='color:red;'>(หาอักษรต่ำเดี่ยว 20 ตัว)</span>";  
+                if(storyProgress === 4) mapMsg = "พ่อ ค้า ฟัน ทอง ซื้อ ช้าง ฮูก<br><span style='color:red;'>(ใส่อักษรต่ำคู่ลงตะกร้า 20 ตัว)</span>";  
                 if(storyProgress === 5) mapMsg = "ตอบคำถามบอส 44 ข้อ 10 นาที!";
-
-                Swal.fire({
-                    title: 'ลายแทงสมบัติ!', html: mapMsg,
-                    imageUrl: 'https://cdn-icons-png.flaticon.com/512/7517/7517228.png', imageWidth: 150,
-                    confirmButtonText: 'ลุยเลย!', confirmButtonColor: '#8b5a2b', background: '#fff8e1', allowOutsideClick: false
-                }).then(() => {
-                    sfxChest.pause(); sfxChest.currentTime = 0; 
-                    
-                    if(!isMuted) {
-                        if(storyProgress === 1) document.getElementById('bgm-m1').play();
-                        if(storyProgress === 2) document.getElementById('bgm-m2').play();
-                        if(storyProgress === 3 || storyProgress === 4) document.getElementById('bgm-m3').play();
-                    }
-                    
-                    if(storyProgress === 5) startBossGame(); else startGame();
-                });
-            }, 1000);
+  
+                Swal.fire({  
+                    title: 'ลายแทงสมบัติ!', html: mapMsg,  
+                    imageUrl: 'https://cdn-icons-png.flaticon.com/512/7517/7517228.png', imageWidth: 150,  
+                    confirmButtonText: 'ลุยเลย!', confirmButtonColor: '#8b5a2b', background: '#fff8e1', allowOutsideClick: false  
+                }).then(() => {  
+                    sfxChest.pause(); sfxChest.currentTime = 0;   
+                      
+                    if(!isMuted) {  
+                        if(storyProgress === 1) document.getElementById('bgm-m1').play();  
+                        if(storyProgress === 2) document.getElementById('bgm-m2').play();  
+                        if(storyProgress === 3 || storyProgress === 4) document.getElementById('bgm-m3').play();  
+                    }  
+                      
+                    if(storyProgress === 5) startBossGame(); else startGame();  
+                });  
+            }, 1000);  
         }
-
-        // ================= มินิเกม 1-4 =================
-        function startGame() {
-            document.getElementById('game-hud').style.display = 'flex';
-            document.getElementById('progress-bar').style.display = 'block';
-            
-            // ซ่อนปุ่ม เริ่มใหม่, เปลี่ยนคู่หู, และ Badge ตอนเล่นเกม เพื่อไม่ให้บังจอ
-            let btnRestart = document.getElementById('new-restart-btn');
-            if(btnRestart) btnRestart.style.setProperty('display', 'none', 'important');
-            let btnChar = document.getElementById('new-char-btn');
-            if(btnChar) btnChar.style.setProperty('display', 'none', 'important');
-            let badgeCon = document.getElementById('badge-container');
+  
+        // ================= มินิเกม 1-4 =================  
+        function startGame() {  
+            document.getElementById('game-hud').style.display = 'flex';  
+            document.getElementById('progress-bar').style.display = 'block';  
+              
+            // ซ่อนปุ่ม เริ่มใหม่, เปลี่ยนคู่หู, และ Badge ตอนเล่นเกม เพื่อไม่ให้บังจอ  
+            let btnRestart = document.getElementById('new-restart-btn');  
+            if(btnRestart) btnRestart.style.setProperty('display', 'none', 'important');  
+            let btnChar = document.getElementById('new-char-btn');  
+            if(btnChar) btnChar.style.setProperty('display', 'none', 'important');  
+            let badgeCon = document.getElementById('badge-container');  
             if(badgeCon) badgeCon.style.setProperty('display', 'none', 'important');
-
-            let targets = [];
-            let distractors = [];
-            
-            // 1. ระบุข้อที่จะต้องถูก ตามกฎแบบเป๊ะๆ 20 ตัว
-            if(storyProgress === 1) {
-                // อักษรกลาง: ก(3) จ(2) ฎ(2) ฏ(2) ด(3) ต(2) บ(2) ป(2) อ(2) = 20
-                targets = ['ก','ก','ก','จ','จ','ฎ','ฎ','ฏ','ฏ','ด','ด','ด','ต','ต','บ','บ','ป','ป','อ','อ'];
-            } else if(storyProgress === 2) {
-                // อักษรสูง: ข(2) ฃ(2) ฉ(2) ฐ(2) ถ(2) ผ(2) ฝ(2) ศ(2) ษ(1) ส(2) ห(1) = 20
-                targets = ['ข','ข','ฃ','ฃ','ฉ','ฉ','ฐ','ฐ','ถ','ถ','ผ','ผ','ฝ','ฝ','ศ','ศ','ษ','ส','ส','ห'];
-            } else if(storyProgress === 3) {
-                // ต่ำเดี่ยว: ง(2) ญ(2) ณ(2) น(2) ม(2) ย(2) ร(2) ล(2) ว(2) ฬ(2) = 20
-                targets = ['ง','ง','ญ','ญ','ณ','ณ','น','น','ม','ม','ย','ย','ร','ร','ล','ล','ว','ว','ฬ','ฬ'];
-            } else if(storyProgress === 4) {
-                // ต่ำคู่: ค(2) ฅ(1) ฆ(1) ช(2) ซ(2) ฌ(1) ฑ(1) ฒ(1) ท(2) ธ(1) พ(2) ฟ(2) ภ(2) ฮ(2) = 20
-                targets = ['ค','ค','ฅ','ฆ','ช','ช','ซ','ซ','ฌ','ฑ','ฒ','ท','ท','ธ','พ','พ','ฟ','ฟ','ภ','ภ'];
+  
+            let targets = [];  
+            let distractors = [];  
+              
+            // 1. ระบุข้อที่จะต้องถูก ตามกฎแบบเป๊ะๆ 20 ตัว  
+            if(storyProgress === 1) {  
+                // อักษรกลาง: ก(3) จ(2) ฎ(2) ฏ(2) ด(3) ต(2) บ(2) ป(2) อ(2) = 20  
+                targets = ['ก','ก','ก','จ','จ','ฎ','ฎ','ฏ','ฏ','ด','ด','ด','ต','ต','บ','บ','ป','ป','อ','อ'];  
+            } else if(storyProgress === 2) {  
+                // อักษรสูง: ข(2) ฃ(2) ฉ(2) ฐ(2) ถ(2) ผ(2) ฝ(2) ศ(2) ษ(1) ส(2) ห(1) = 20  
+                targets = ['ข','ข','ฃ','ฃ','ฉ','ฉ','ฐ','ฐ','ถ','ถ','ผ','ผ','ฝ','ฝ','ศ','ศ','ษ','ส','ส','ห'];  
+            } else if(storyProgress === 3) {  
+                // ต่ำเดี่ยว: ง(2) ญ(2) ณ(2) น(2) ม(2) ย(2) ร(2) ล(2) ว(2) ฬ(2) = 20  
+                targets = ['ง','ง','ญ','ญ','ณ','ณ','น','น','ม','ม','ย','ย','ร','ร','ล','ล','ว','ว','ฬ','ฬ'];  
+            } else if(storyProgress === 4) {  
+                // ต่ำคู่: ค(2) ฅ(1) ฆ(1) ช(2) ซ(2) ฌ(1) ฑ(1) ฒ(1) ท(2) ธ(1) พ(2) ฟ(2) ภ(2) ฮ(2) = 20  
+                targets = ['ค','ค','ฅ','ฆ','ช','ช','ซ','ซ','ฌ','ฑ','ฒ','ท','ท','ธ','พ','พ','ฟ','ฟ','ภ','ภ'];  
             }
-
-            // 2. ดึงข้อหลอก (ตัวที่ไม่ใช่เป้าหมาย) เพื่อให้ครบ 55 (ขาดอีก 35 ตัว)
-            let uniqueTargets = [...new Set(targets)];
+  
+            // 2. ดึงข้อหลอก (ตัวที่ไม่ใช่เป้าหมาย) เพื่อให้ครบ 55 (ขาดอีก 35 ตัว)  
+            let uniqueTargets = [...new Set(targets)];  
             let distractorArr = allCons.filter(c => !uniqueTargets.includes(c));
-
-            for(let i=0; i<35; i++) {
-                distractors.push(distractorArr[i % distractorArr.length]);
-            }
-            
-            // นำมารวมกันเป็น 55 ตัวพอดีเป๊ะ แล้วสับเปลี่ยนลำดับ
-            currentDropList = targets.concat(distractors);
+  
+            for(let i=0; i<35; i++) {  
+                distractors.push(distractorArr[i % distractorArr.length]);  
+            }  
+              
+            // นำมารวมกันเป็น 55 ตัวพอดีเป๊ะ แล้วสับเปลี่ยนลำดับ  
+            currentDropList = targets.concat(distractors);  
             currentDropList.sort(() => Math.random() - 0.5); 
-
-            let timeBonus = document.createElement('div');
-            timeBonus.id = 'time-bonus-bar';
-            timeBonus.className = 'time-bonus-bar';
-            timeBonus.style.display = 'block';
-            timeBonus.innerHTML = '<div class="time-bonus-fill" id="time-bonus-fill"></div>';
+  
+            let timeBonus = document.createElement('div');  
+            timeBonus.id = 'time-bonus-bar';  
+            timeBonus.className = 'time-bonus-bar';  
+            timeBonus.style.display = 'block';  
+            timeBonus.innerHTML = '<div class="time-bonus-fill" id="time-bonus-fill"></div>';  
             document.getElementById('scene-game').appendChild(timeBonus);
-
-            let isBasket = (storyProgress === 2 || storyProgress === 4);
-            if(isBasket) {
-                let basketEl = document.getElementById('basket');
-                basketEl.style.display = 'block';
-                // นำตะกร้ามาไว้ข้างล่างแต่ลอยอยู่เหนือแถบความคืบหน้า เพื่อไม่ให้บังเวลาเล่น
-                basketEl.style.setProperty('bottom', '55px', 'important');
-                basketEl.style.setProperty('top', 'auto', 'important');
+  
+            let isBasket = (storyProgress === 2 || storyProgress === 4);  
+            if(isBasket) {  
+                let basketEl = document.getElementById('basket');  
+                basketEl.style.display = 'block';  
+                // นำตะกร้ามาไว้ข้างล่างแต่ลอยอยู่เหนือแถบความคืบหน้า เพื่อไม่ให้บังเวลาเล่น  
+                basketEl.style.setProperty('bottom', '55px', 'important');  
+                basketEl.style.setProperty('top', 'auto', 'important');  
             }
-
-            let timeLeft = 240; // 4 นาที ตามบรีฟ
-            currentScore = 0; itemsSpawned = 0;
-            scoreMultiplier = 1;
-            activePowerups = { '2x': false, 'shield': false, 'slow': false };
-            
-            let targetScore = 20; 
-            document.getElementById('score').innerText = currentScore + "/" + targetScore;
+  
+            let timeLeft = 240; // 4 นาที ตามบรีฟ  
+            currentScore = 0; itemsSpawned = 0;  
+            scoreMultiplier = 1;  
+            activePowerups = { '2x': false, 'shield': false, 'slow': false };  
+              
+            let targetScore = 20;   
+            document.getElementById('score').innerText = currentScore + "/" + targetScore;  
             document.getElementById('timer').innerText = timeLeft;
-
-            gameTimer = setInterval(() => {
-                timeLeft--; 
-                document.getElementById('timer').innerText = timeLeft;
-                updateTimeBonus(timeLeft);
-                
-                // ตรวจสอบถ้าหมดเวลา หรือ ของหล่นครบ 55 ชิ้นและหายไปจากจอหมดแล้ว
-                if(timeLeft <= 0 || (currentDropList.length === 0 && document.querySelectorAll('.game-item').length === 0)) {
-                    checkWinCondition();
-                }
+  
+            gameTimer = setInterval(() => {  
+                timeLeft--;   
+                document.getElementById('timer').innerText = timeLeft;  
+                updateTimeBonus(timeLeft);  
+                  
+                // ตรวจสอบถ้าหมดเวลา หรือ ของหล่นครบ 55 ชิ้นและหายไปจากจอหมดแล้ว  
+                if(timeLeft <= 0 || (currentDropList.length === 0 && document.querySelectorAll('.game-item').length === 0)) {  
+                    checkWinCondition();  
+                }  
             }, 1000);
-
-            spawnInterval = setInterval(() => {
-                spawnItem(uniqueTargets);
-                spawnPowerup();
-            }, 1500); 
+  
+            spawnInterval = setInterval(() => {  
+                spawnItem(uniqueTargets);  
+                spawnPowerup();  
+            }, 1500);   
         }
-
-        function updateProgressBar() {
-            let targetScore = (storyProgress === 5) ? 44 : 20;
-            let progress = Math.min((currentScore / targetScore) * 100, 100);
-            document.getElementById('progress-fill').style.width = progress + '%';
-            document.getElementById('progress-fill').innerText = Math.round(progress) + '%';
+  
+        function updateProgressBar() {  
+            let targetScore = (storyProgress === 5) ? 44 : 20;  
+            let progress = Math.min((currentScore / targetScore) * 100, 100);  
+            document.getElementById('progress-fill').style.width = progress + '%';  
+            document.getElementById('progress-fill').innerText = Math.round(progress) + '%';  
         }
-
-        function spawnItem(targetArr) {
-            // ถ้าของหล่นครบ 55 ชิ้นแล้ว ให้หยุดสร้างเพิ่ม
-            if(currentDropList.length === 0) return; 
-            
-            // จำกัดไอเทมในหน้าจอไม่เกิน 4 ตัว
+  
+        function spawnItem(targetArr) {  
+            // ถ้าของหล่นครบ 55 ชิ้นแล้ว ให้หยุดสร้างเพิ่ม  
+            if(currentDropList.length === 0) return;   
+              
+            // จำกัดไอเทมในหน้าจอไม่เกิน 4 ตัว  
             if(document.querySelectorAll('.game-item').length >= 4) return; 
-
-            // ดึงตัวอักษร 1 ตัวออกจาก 55 ตัวที่เราสุ่มไว้
-            let char = currentDropList.pop(); 
-            itemsSpawned++;
-            
-            let item = document.createElement('div');
-            item.className = 'game-item'; item.innerText = char;
-            item.style.left = Math.floor(Math.random() * 80) + 10 + '%';
-            
-            // ให้เริ่มหล่นจากระดับใต้แถบคะแนน/เวลา 
-            let startY = 130; 
-            item.style.top = startY + 'px'; 
-            
-            document.getElementById('game-area').appendChild(item);
-            
-            let pos = startY;
-            let fallSpeed = window.innerHeight / 200; 
-            
-            let fall = setInterval(() => {
-                pos += fallSpeed;
-                item.style.top = pos + 'px';
-                if(pos > window.innerHeight) {
-                    clearInterval(fall); item.remove();
-                }
+  
+            // ดึงตัวอักษร 1 ตัวออกจาก 55 ตัวที่เราสุ่มไว้  
+            let char = currentDropList.pop();   
+            itemsSpawned++;  
+              
+            let item = document.createElement('div');  
+            item.className = 'game-item'; item.innerText = char;  
+            item.style.left = Math.floor(Math.random() * 80) + 10 + '%';  
+              
+            // ให้เริ่มหล่นจากระดับใต้แถบคะแนน/เวลา   
+            let startY = 130;   
+            item.style.top = startY + 'px';   
+              
+            document.getElementById('game-area').appendChild(item);  
+              
+            let pos = startY;  
+            let fallSpeed = window.innerHeight / 200;   
+              
+            let fall = setInterval(() => {  
+                pos += fallSpeed;  
+                item.style.top = pos + 'px';  
+                if(pos > window.innerHeight) {  
+                    clearInterval(fall); item.remove();  
+                }  
             }, 20);
-
+  
             let isBasket = (storyProgress === 2 || storyProgress === 4);
-
-            item.onpointerdown = function(e) {
-                e.preventDefault(); clearInterval(fall);
-                
-                if(targetArr.includes(this.innerText)) {
-                    let pointGain = 1 * scoreMultiplier;
-                    currentScore += pointGain; 
-                    comboCount++;
-                    if(comboCount > maxCombo) maxCombo = comboCount;
-                    
-                    let targetScore = 20;
-                    document.getElementById('score').innerText = currentScore + "/" + targetScore;
-                    updateProgressBar();
-                    showFloatingText("+" + pointGain, e.clientX, e.clientY, "#8bc34a");
-                    
-                    if(comboCount >= 5) {
-                        document.getElementById('combo-display').style.display = 'block';
-                        document.getElementById('combo-count').innerText = comboCount;
-                        showAchievement('🔥 Combo x' + comboCount + '!');
-                    }
-                    
-                    if(scoreMultiplier === 2) {
-                        showAchievement('2️⃣ Double Points!');
-                    }
-                    
-                    if(isBasket) {
-                        playSfx('sfx-drop');
-                        let basket = document.getElementById('basket').getBoundingClientRect();
-                        this.style.transition = "all 0.5s ease";
-                        this.style.top = (basket.top + 30) + "px";
-                        this.style.left = (basket.left + 35) + "px";
-                        this.style.transform = "scale(0)";
-                    } else {
-                        playSfx('sfx-correct');
-                        this.style.background = "#8bc34a"; this.style.color = "#fff";
-                        this.style.transform = "scale(0)";
-                    }
-                } else {
-                    if(activePowerups.shield) {
-                        activePowerups.shield = false;
-                        showAchievement('🛡️ Shield Saved You!');
-                        this.style.background = "#ffc107"; this.style.color = "#000";
-                    } else {
-                        comboCount = 0;
-                        document.getElementById('combo-display').style.display = 'none';
-                        playSfx('sfx-wrong'); 
-                        showFloatingText("❌", e.clientX, e.clientY, "#f44336");
-                        this.style.background = "#d32f2f"; this.style.color = "#fff";
-                    }
-                    this.style.transform = "scale(0)";
+  
+            item.onpointerdown = function(e) {  
+                e.preventDefault(); clearInterval(fall);  
+                  
+                if(targetArr.includes(this.innerText)) {  
+                    let pointGain = 1 * scoreMultiplier;  
+                    currentScore += pointGain;   
+                    comboCount++;  
+                    if(comboCount > maxCombo) maxCombo = comboCount;  
+                      
+                    let targetScore = 20;  
+                    document.getElementById('score').innerText = currentScore + "/" + targetScore;  
+                    updateProgressBar();  
+                    showFloatingText("+" + pointGain, e.clientX, e.clientY, "#8bc34a");  
+                      
+                    if(comboCount >= 5) {  
+                        document.getElementById('combo-display').style.display = 'block';  
+                        document.getElementById('combo-count').innerText = comboCount;  
+                        showAchievement('🔥 Combo x' + comboCount + '!');  
+                    }  
+                      
+                    if(scoreMultiplier === 2) {  
+                        showAchievement('2️⃣ Double Points!');  
+                    }  
+                      
+                    if(isBasket) {  
+                        playSfx('sfx-drop');  
+                        let basket = document.getElementById('basket').getBoundingClientRect();  
+                        this.style.transition = "all 0.5s ease";  
+                        this.style.top = (basket.top + 30) + "px";  
+                        this.style.left = (basket.left + 35) + "px";  
+                        this.style.transform = "scale(0)";  
+                    } else {  
+                        playSfx('sfx-correct');  
+                        this.style.background = "#8bc34a"; this.style.color = "#fff";  
+                        this.style.transform = "scale(0)";  
+                    }  
+                } else {  
+                    if(activePowerups.shield) {  
+                        activePowerups.shield = false;  
+                        showAchievement('🛡️ Shield Saved You!');  
+                        this.style.background = "#ffc107"; this.style.color = "#000";  
+                    } else {  
+                        comboCount = 0;  
+                        document.getElementById('combo-display').style.display = 'none';  
+                        playSfx('sfx-wrong');   
+                        showFloatingText("❌", e.clientX, e.clientY, "#f44336");  
+                        this.style.background = "#d32f2f"; this.style.color = "#fff";  
+                    }  
+                    this.style.transform = "scale(0)";  
                 }
-
-                setTimeout(() => { 
-                    this.remove(); 
-                    // ถ้าทำครบ 20 คะแนนแล้ว ให้เลื่อนด่านเลยไม่ต้องรอเวลา
-                    if(currentScore >= 20) {
-                        checkWinCondition();
-                    }
-                }, 500);
-            };
+  
+                setTimeout(() => {   
+                    this.remove();   
+                    // ถ้าทำครบ 20 คะแนนแล้ว ให้เลื่อนด่านเลยไม่ต้องรอเวลา  
+                    if(currentScore >= 20) {  
+                        clearInterval(gameTimer);  
+                        clearInterval(spawnInterval);  
+                        checkWinCondition();  
+                    }  
+                }, 500);  
+            };  
         }
-
-        // กฎการผ่านด่าน: ต้องเก็บให้ได้ 10 คะแนนขึ้นไป จึงจะผ่านด่าน 1-4 (ตามที่คุณบรีฟใหม่)
-        function checkWinCondition() { 
-            let passMark = (storyProgress === 5) ? 22 : 10; 
-            if(currentScore >= passMark) endGame(true); else endGame(false); 
+  
+        // กฎการผ่านด่าน: ต้องเก็บให้ได้ 10 คะแนนขึ้นไป จึงจะผ่านด่าน 1-4 (ตามที่คุณบรีฟใหม่)  
+        function checkWinCondition() {   
+            let passMark = (storyProgress === 5) ? 22 : 10;   
+            if(currentScore >= passMark) endGame(true); else endGame(false);   
         }
-
-        // คำนวณรางวัลตามเปอร์เซ็นต์ (อ้างอิงจาก 20 หรือ 44)
-        function getRewardData(score) {
-            let targetScore = (storyProgress === 5) ? 44 : 20;
-            let ratio = score / targetScore;
-            if (ratio >= 0.8) return { stars: "⭐⭐⭐", d: 5 }; 
-            if (ratio >= 0.6) return { stars: "⭐⭐", d: 4 }; 
-            if (ratio >= 0.5) return { stars: "⭐", d: 3 }; 
-            return { stars: "", d: 0 };
-        }
-
-        function endGame(isWin) {
-            clearInterval(gameTimer); clearInterval(spawnInterval);
-            document.getElementById('game-area').innerHTML = "";
-            document.getElementById('game-hud').style.display = 'none';
-            document.getElementById('progress-bar').style.display = 'none';
-            document.getElementById('combo-display').style.display = 'none';
-            document.getElementById('basket').style.display = 'none';
-            
-            let timeBonus = document.getElementById('time-bonus-bar');
-            if(timeBonus) timeBonus.remove();
-            
-            stopAllBgm();
-            
-            let targetScore = (storyProgress === 5) ? 44 : 20;
-
-            if(isWin) {
-                // ด่าน 1=20, ด่าน 2=20, ด่าน 3 (ต่ำเดี่ยว 20/2 + ต่ำคู่ 20/2 = 20 เพชร)
-                let diamondReward = (storyProgress === 5) ? 5 : 20;
-                if(storyProgress === 3 || storyProgress === 4) {
-                    diamondReward = 10; // หารสอง
-                }
-                
-                totalDiamonds += diamondReward;
-                gameStats.levelsPassed++;
-                gameStats.totalDiamonds = totalDiamonds;
-                gameStats.bestCombo = Math.max(gameStats.bestCombo, maxCombo);
-                
-                createConfetti(50);
-                showStarRating(3);
-                
-                if(storyProgress===1) scoresData.m1 = currentScore;
-                if(storyProgress===2) scoresData.m2 = currentScore;
-                if(storyProgress===3) scoresData.m31 = currentScore;
-                if(storyProgress===4) scoresData.m32 = currentScore;
-
-                let nextMsg = storyProgress === 3 ? "เตรียมตัวลุย อักษรต่ำคู่ ต่อเลย!" : "ไปด่านต่อไปกันเลย!";
-                Swal.fire({ title: `ยอดเยี่ยม!`, text: `ได้ ${currentScore}/${targetScore} คะแนน\n\n${nextMsg}`, icon: "success", confirmButtonColor: '#8b5a2b', allowOutsideClick: false })
-                .then(() => { 
-                    if(storyProgress===0) { storyProgress = 1; } else { storyProgress++; } 
-                    switchScene('scene-map'); resumeStory(); 
-                });
-            } else {
-                let passTxt = (storyProgress === 5) ? 22 : 10;
-                Swal.fire({ title: "ไม่ผ่านด่าน!", text: `ได้ ${currentScore} คะแนน (ต้องได้ ${passTxt} คะแนนขึ้นไป)\nลองใหม่สู้ๆ!`, icon: "error", confirmButtonColor: '#d32f2f', allowOutsideClick: false })
-                .then(() => { switchScene('scene-map'); resumeStory(); }); 
-            }
-        }
-
-        // ================= บอสไฟต์ 44 ข้อ (10 นาที) =================
-        function startBossGame() {
-            document.getElementById('game-hud').style.display = 'flex';
-            document.getElementById('combo-display').style.display = 'block';
-            document.getElementById('quiz-container').style.display = 'block';
-            
-            // ซ่อนปุ่ม เริ่มเกมใหม่, เปลี่ยนตัวละคร และ Badge
-            let btnRestart = document.getElementById('new-restart-btn');
-            if(btnRestart) btnRestart.style.setProperty('display', 'none', 'important');
-            let btnChar = document.getElementById('new-char-btn');
-            if(btnChar) btnChar.style.setProperty('display', 'none', 'important');
-            let badgeCon = document.getElementById('badge-container');
-            if(badgeCon) badgeCon.style.setProperty('display', 'none', 'important');
-
-            let timeLeft = 600; // 10 นาที
-            currentScore = 0; quizIndex = 0; comboCount = 0;
-            scoreMultiplier = 1;
-            activePowerups = { '2x': false, 'shield': false, 'slow': false };
-            document.getElementById('score').innerText = currentScore + "/44";
-            document.getElementById('timer').innerText = timeLeft;
-
-            quizData.sort(() => Math.random() - 0.5);
-
-            gameTimer = setInterval(() => {
-                timeLeft--; document.getElementById('timer').innerText = timeLeft;
-                if(timeLeft <= 0) endBoss();
-            }, 1000);
-            showQuiz();
-        }
-
-        function showQuiz() {
-            if(quizIndex >= 44) { endBoss(); return; }
-            
-            document.getElementById('quiz-current').innerText = quizIndex + 1;
-            document.getElementById('quiz-word').innerText = quizData[quizIndex].w;
-            document.getElementById('hint-text').style.display = 'none';
-            document.getElementById('hint-btn').disabled = false;
-            hintUsed = false;
-            
-            let diffDisplay = document.getElementById('difficulty-display');
-            diffDisplay.className = 'difficulty-badge';
-            if(quizData[quizIndex].difficulty === 'easy') {
-                diffDisplay.classList.add('difficulty-easy');
-                diffDisplay.innerText = 'ง่าย';
-            } else if(quizData[quizIndex].difficulty === 'medium') {
-                diffDisplay.classList.add('difficulty-medium');
-                diffDisplay.innerText = 'ปานกลาง';
-            } else {
-                diffDisplay.classList.add('difficulty-hard');
-                diffDisplay.innerText = 'ยาก';
-            }
-            
-            let imgEl = document.getElementById('quiz-img');
-            if(quizData[quizIndex].img) {
-                imgEl.src = quizData[quizIndex].img;
-                imgEl.style.display = 'block';
-            } else {
-                imgEl.style.display = 'none';
-            }
-        }
-
-        function showHint() {
-            if(hintUsed) return;
-            hintUsed = true;
-            document.getElementById('hint-text').style.display = 'block';
-            document.getElementById('hint-content').innerText = quizData[quizIndex].hint;
-            document.getElementById('hint-btn').disabled = true;
-        }
-
-        function checkQuiz(ans, event) {
-            let boss = document.getElementById('boss-sprite');
-            let diffBonus = calculateDifficultyBonus(quizData[quizIndex].difficulty);
-            
-            if(quizData[quizIndex].a === ans) {
-                playSfx('sfx-correct'); 
-                let pointGain = Math.round(1 * diffBonus);
-                currentScore += pointGain; 
-                comboCount++;
-                if(comboCount > maxCombo) maxCombo = comboCount;
-                
-                document.getElementById('score').innerText = currentScore + "/44";
-                document.getElementById('combo-count').innerText = comboCount;
-                
-                boss.classList.add('boss-hit');
-                showFloatingText("+" + pointGain, event.clientX, event.clientY, "#8bc34a");
-                
-                if(comboCount % 5 === 0) {
-                    showAchievement('🔥 Combo x' + comboCount + '!');
-                }
-                
-                if(quizData[quizIndex].difficulty === 'hard') {
-                    showAchievement('💪 ยาก! +' + pointGain + ' โบนัส');
-                }
-                
-                setTimeout(() => boss.classList.remove('boss-hit'), 300);
-            } else { 
-                comboCount = 0;
-                playSfx('sfx-wrong'); 
-                showFloatingText("❌", event.clientX, event.clientY, "#f44336");
-                let container = document.getElementById('quiz-container');
-                container.style.transform = "translate(-50%, -50%) translateX(-10px)";
-                setTimeout(() => container.style.transform = "translate(-50%, -50%) translateX(10px)", 50);
-                setTimeout(() => container.style.transform = "translate(-50%, -50%) translateX(0)", 100);
-            }
-            quizIndex++; showQuiz();
-        }
-
-        function showAchievement(text) {
-            playSfx('sfx-achievement');
-            let popup = document.getElementById('achievement-popup');
-            popup.innerText = text;
-            popup.style.display = 'block';
-            setTimeout(() => { popup.style.display = 'none'; }, 2000);
-        }
-
-        function endBoss() {
-            clearInterval(gameTimer);
-            document.getElementById('quiz-container').style.display = 'none';
-            document.getElementById('game-hud').style.display = 'none';
-            document.getElementById('combo-display').style.display = 'none';
-            stopAllBgm();
-
-            if(currentScore >= 22) {
-                let bossRatio = currentScore / 44;
-                let bD = 0;
-                if(bossRatio >= 0.8) bD = 5;
-                else if (bossRatio >= 0.55) bD = 4;
-                else bD = 3;
-                totalDiamonds += bD;
-                scoresData.m4 = currentScore;
-                
-                createConfetti(60);
-                showStarRating(bossRatio >= 0.8 ? 3 : bossRatio >= 0.55 ? 2 : 1);
-                
-                sendDataToSheet();
-
-                let finalStars = "";
-                let finalMsg = "";
-                if(bD === 5) { finalStars = "⭐⭐⭐ PERFECT!"; finalMsg = "ยอดเยี่ยม! สมมงไตรยางศ์มาสเตอร์!"; } 
-                else if(bD === 4) { finalStars = "⭐⭐ EXCELLENT"; finalMsg = "เก่งมาก! ไปฝึกเพิ่มอีกนิดนะ!"; } 
-                else { finalStars = "⭐ GREAT"; finalMsg = "ผ่านได้หวุดหวิด พยายามอีกนิดนะ!"; }
-
-                // ประเมินผลแต่ละหมวด
-                let feedbackStr = "<br><br><div style='text-align:left; font-size:14px; background:#fff3e0; padding:10px; border-radius:10px; border:2px solid #ff9800;'>";
-                feedbackStr += "<b>📝 วิเคราะห์จุดแข็ง/จุดอ่อน:</b><br>";
-                feedbackStr += (scoresData.m1 >= 10) ? "✅ <b>อักษรกลาง:</b> เข้าใจได้ดีเยี่ยม!<br>" : "❌ <b>อักษรกลาง:</b> ต้องทบทวนเพิ่มนะ<br>";
-                feedbackStr += (scoresData.m2 >= 10) ? "✅ <b>อักษรสูง:</b> เข้าใจได้ดีเยี่ยม!<br>" : "❌ <b>อักษรสูง:</b> ต้องทบทวนเพิ่มนะ<br>";
-                feedbackStr += (scoresData.m31 >= 10) ? "✅ <b>อักษรต่ำเดี่ยว:</b> เข้าใจได้ดีเยี่ยม!<br>" : "❌ <b>อักษรต่ำเดี่ยว:</b> ต้องทบทวนเพิ่มนะ<br>";
-                feedbackStr += (scoresData.m32 >= 10) ? "✅ <b>อักษรต่ำคู่:</b> เข้าใจได้ดีเยี่ยม!<br>" : "❌ <b>อักษรต่ำคู่:</b> ต้องทบทวนเพิ่มนะ<br>";
-                feedbackStr += "</div>";
-
-                Swal.fire({
-                    title: "🏆 ยินดีด้วย คุณพิชิตป่าสำเร็จ!", 
-                    html: `<span style='font-size:35px;'>${finalStars}</span><br><b style="color:#ff6f00; font-size:18px;">${finalMsg}</b><br><span style="font-size:20px;">📊 คะแนนรวมทั้งหมด <b>${totalDiamonds}/65</b> เพชร 💎</span><br><span style="color:#2196f3; font-size:16px;">📈 คะแนนบอสไฟต์: <b>${currentScore}/44</b></span>${feedbackStr}`,
-                    imageUrl: 'https://cdn-icons-png.flaticon.com/512/4230/4230571.png', imageWidth: 100, 
-                    confirmButtonText: '🎓 รับใบประกาศกับคุณครู!', confirmButtonColor: '#8bc34a', background: '#fff8e1', allowOutsideClick: false
-                }).then(() => { location.reload(); });
-            } else {
-                Swal.fire({ title: "⚔️ ยังไม่ชนะบอส!", text: "ต้องถูกอย่างน้อย 22 ข้อ ลองใหม่นะ!", icon: "error", allowOutsideClick: false })
-                .then(() => { startBossGame(); });
-            }
-        }
-
-        function sendDataToSheet() {
-            const payload = {
-                studentName: playerName,
-                scoreLvl1: scoresData.m1,
-                scoreLvl2: scoresData.m2,
-                scoreLvl3: scoresData.m31 + scoresData.m32, 
-                scoreBoss: scoresData.m4,
-                totalScore: totalDiamonds 
-            };
-
-            fetch(sheetUrl, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                body: JSON.stringify(payload)
-            }).then(res => console.log("ส่งเข้าชีตสำเร็จ!"))
-              .catch(e => console.log(e));
-        }
-    </script>
-</body>
-</html>
+  
+        // คำนวณรางวัลตามเปอร์เซ็นต์ (อ้างอิงจาก 20 หรือ 44)  
+        function getRewardData(score) {  
+            let targetScore = (storyProgress === 5) ? 44 : 20;  
+            let ratio = score / targetScore;  
+            if (ratio >= 0.8
