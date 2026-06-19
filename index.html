@@ -553,10 +553,10 @@
             
             <!-- ส่วนที่เพิ่มใหม่: ช่องกรอกรหัสครู -->
             <input type="text" id="input-teacher" placeholder="รหัสประจำตัวคุณครู..." autocomplete="off" style="padding: 12px; font-size: 20px; border-radius: 10px; border: 3px solid #5c3a21; text-align: center; margin-bottom: 20px; width: 100%; background: #e3f2fd; color: #4a2e15; font-weight: bold; outline: none;">
-            
             <button class="wood-btn" onclick="goToCharSelect()">▶ เริ่มการผจญภัย</button>
             <div class="manual-link" onclick="showManual()">📖 คู่มือการเล่น</div>
         </div>
+    </div> <div id="scene-char" class="scene">
 
     <div id="scene-char" class="scene">
         <div class="wood-panel">
@@ -1758,24 +1758,16 @@
             }
         }
 
-        function sendDataToSheet() {
+       function sendDataToSheet() {
             const payload = {
                 studentName: playerName,
-                teacherCode: document.getElementById('input-teacher').value.trim(), // ส่งรหัสครูไปให้ฐานข้อมูลด้วย
+                teacherCode: document.getElementById('input-teacher').value.trim(), 
                 scoreLvl1: scoresData.m1,
                 scoreLvl2: scoresData.m2,
                 scoreLvl3: scoresData.m31 + scoresData.m32, 
                 scoreBoss: scoresData.m4,
                 totalScore: totalDiamonds 
             };
-
-            fetch(sheetUrl, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                body: JSON.stringify(payload)
-            }).then(res => console.log("ส่งเข้าชีตสำเร็จ!"))
-              .catch(e => console.log(e));
-        }
 
             fetch(sheetUrl, { 
                 method: 'POST', 
