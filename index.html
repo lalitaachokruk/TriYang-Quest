@@ -91,14 +91,25 @@
         .wood-btn:active { transform: translateY(6px); box-shadow: 0 0 0 #4a2e15; }
 
         .manual-link {
-            position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+            position: fixed; bottom: 10px; left: 15px; /* จัดชิดซ้าย */
             font-size: 14px; color: #ffca28; font-weight: bold;
             text-decoration: none; cursor: pointer; text-shadow: 1px 1px 2px #4a2e15; z-index: 50;
             transition: 0.2s; white-space: nowrap; padding: 6px 12px;
             background: rgba(139, 90, 43, 0.85); border-radius: 20px;
         }
-        .manual-link:hover { color: #fff; transform: translateX(-50%) scale(1.05); }
-        .manual-link.hidden { display: none; }
+        .manual-link:hover { color: #fff; transform: scale(1.05); }
+        .manual-link.hidden { display: none !important; }
+
+        .teacher-link {
+            position: fixed; bottom: 10px; right: 15px; /* จัดชิดขวา */
+            font-size: 14px; color: #ffffff; font-weight: bold;
+            text-decoration: none; cursor: pointer; text-shadow: 1px 1px 2px #000; z-index: 50;
+            transition: 0.2s; white-space: nowrap; padding: 6px 12px;
+            background: rgba(25, 118, 210, 0.85); border-radius: 20px;
+            border: 2px solid #115293;
+        }
+        .teacher-link:hover { color: #fff; transform: scale(1.05); }
+        .teacher-link.hidden { display: none !important; }
 
         /* ================= ปุ่มด้านบน (Music & Settings) ================= */
         .top-btn {
@@ -555,8 +566,9 @@
             <input type="text" id="input-teacher" placeholder="รหัสประจำตัวคุณครู..." autocomplete="off" style="padding: 12px; font-size: 20px; border-radius: 10px; border: 3px solid #5c3a21; text-align: center; margin-bottom: 20px; width: 100%; background: #e3f2fd; color: #4a2e15; font-weight: bold; outline: none;">
             <button class="wood-btn" onclick="goToCharSelect()">▶ เริ่มการผจญภัย</button>
             <div class="manual-link" onclick="showManual()">📖 คู่มือการเล่น</div>
+            <a href="https://lalitaachokruk.github.io/Admin-/" target="_blank" class="teacher-link">👨‍🏫 สำหรับคุณครู</a>        
         </div>
-    </div> <div id="scene-char" class="scene">
+    <div id="scene-char" class="scene">
 
     <div id="scene-char" class="scene">
         <div class="wood-panel">
@@ -1207,10 +1219,11 @@
             avatar.style.top = layoutCoords[targetNode].y + '%';
         }
 
-        function resumeStory() {
-            stopAllBgm();
-            document.querySelector('.manual-link').classList.remove('hidden');
-            document.getElementById('dialogue-popup').style.display = 'none';
+        function prepareMission() {
+            switchScene('scene-game');
+            document.querySelector('.manual-link').classList.add('hidden');
+            document.querySelector('.teacher-link').classList.add('hidden'); // <-- เพิ่มบรรทัดนี้
+            document.getElementById('quiz-container').style.display = 'none';
             
             // ตอนอยู่หน้า Map ให้โชว์เมนูเสมอ
             let leftMenu = document.getElementById('left-menu-container');
