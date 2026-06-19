@@ -12,6 +12,8 @@
     <meta name="apple-mobile-web-app-title" content="ป่าไตรยางศ์">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
     
     <style>
         :root {
@@ -1269,23 +1271,36 @@
             setTimeout(() => { popup.style.display = 'none'; }, 2000);
         }
 
+        // ================= เชื่อมต่อ Firebase Realtime Database =================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCczlWwxXAbhXL_Fy_H34ehBSEsvSkOXPU",
+            authDomain: "triyang-quest-2a294.firebaseapp.com",
+            databaseURL: "https://triyang-quest-2a294-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "triyang-quest-2a294",
+            storageBucket: "triyang-quest-2a294.firebasestorage.app",
+            messagingSenderId: "662514531113",
+            appId: "1:662514531113:web:52936ffb956d3475af1538"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ฟังก์ชันส่งคะแนนตัวใหม่เข้า Firebase
         function sendDataToSheet() {
+            const teacherCode = document.getElementById('input-teacher').value.trim();
             const payload = {
                 studentName: playerName,
-                teacherCode: document.getElementById('input-teacher').value.trim(), 
                 scoreLvl1: scoresData.m1,
                 scoreLvl2: scoresData.m2,
                 scoreLvl3: scoresData.m31 + scoresData.m32, 
                 scoreBoss: scoresData.m4,
-                totalScore: totalDiamonds 
+                totalScore: totalDiamonds,
+                timestamp: Date.now()
             };
 
-            fetch(sheetUrl, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                body: JSON.stringify(payload)
-            }).then(res => console.log("ส่งเข้าชีตสำเร็จ!"))
-              .catch(e => console.log(e));
+            // ส่งข้อมูลขึ้นฐานข้อมูลรายห้องเรียนแบบ Real-time
+            db.ref('rooms/' + teacherCode + '/students').push(payload)
+                .then(() => console.log("ส่งคะแนนเข้า Firebase สำเร็จ! 🚀"))
+                .catch(e => console.log("Firebase Error:", e));
         }
         
         function updateBadgesDisplay() {
