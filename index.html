@@ -466,6 +466,34 @@
             0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }
             100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); opacity: 0; }
         }
+        /* ================= ปรับ UI ให้สมดุลไม่ตกขอบบนมือถือ ================= */
+        @media (max-width: 768px) {
+            #quiz-container {
+                top: 55% !important; /* ดันกล่องขึ้นมาตรงกลางมากขึ้น */
+                padding: 15px !important;
+            }
+            .quiz-img-display {
+                top: -100px !important; /* ลดระยะที่รูปลอยทะลุขอบ */
+                width: 90px !important; 
+                height: 90px !important;
+            }
+            .quiz-btn {
+                font-size: 18px; /* ปรับฟอนต์ปุ่มให้เล็กลงนิดนึงกันข้อความล้น */
+                padding: 8px;
+            }
+            /* ใส่แทรกไว้ในปีกกาของ @media (max-width: 768px) {...} */
+            .game-item {
+                width: 65px !important; 
+                height: 65px !important; 
+                font-size: 30px !important;
+                border-width: 3px !important;
+            }
+            .powerup {
+                width: 45px !important; 
+                height: 45px !important; 
+                font-size: 24px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -798,19 +826,27 @@
             document.getElementById('game-area').appendChild(powerup);
             
             let pos = 130;
-            let fallSpeed = window.innerHeight / 250;
+            let fallSpeed = window.innerHeight / 280; // พาวเวอร์อัพร่วงช้ากว่าปกตินิดนึงให้เก็บง่าย
+            let fallReq;
             
-            let fall = setInterval(() => {
+            function fallAnim() {
                 pos += fallSpeed;
                 powerup.style.top = pos + 'px';
                 if(pos > window.innerHeight) {
-                    clearInterval(fall); powerup.remove();
+                    cancelAnimationFrame(fallReq); 
+                    powerup.remove();
+                } else {
+                    fallReq = requestAnimationFrame(fallAnim);
                 }
-            }, 20);
+            }
+            fallReq = requestAnimationFrame(fallAnim);
 
-            powerup.onclick = function(e) {
+            // เปลี่ยนจาก onclick เป็น onpointerdown เพื่อให้จอมือถือตอบสนองทันที 0 มิลลิวินาที
+            powerup.onpointerdown = function(e) {
+                e.preventDefault();
                 e.stopPropagation();
-                clearInterval(fall);
+                cancelAnimationFrame(fallReq);
+                this.style.pointerEvents = "none";
                 activatePowerup(chosen.type, chosen.name, chosen.duration);
                 this.remove();
                 playSfx('sfx-correct');
@@ -1385,20 +1421,28 @@
             document.getElementById('game-area').appendChild(item);
             
             let pos = startY;
-            let fallSpeed = window.innerHeight / 200; 
+            let fallSpeed = window.innerHeight / 220; // ปรับความเร็วให้พอดีกับสัดส่วนจอ
+            let fallReq; 
             
-            let fall = setInterval(() => {
+            // ใช้แอนิเมชันแบบเฟรมต่อเฟรมแทนการนับเวลา
+            function fallAnim() {
                 pos += fallSpeed;
                 item.style.top = pos + 'px';
                 if(pos > window.innerHeight) {
-                    clearInterval(fall); item.remove();
+                    cancelAnimationFrame(fallReq); 
+                    item.remove();
+                } else {
+                    fallReq = requestAnimationFrame(fallAnim);
                 }
-            }, 20);
+            }
+            fallReq = requestAnimationFrame(fallAnim);
 
             let isBasket = (storyProgress === 2 || storyProgress === 4);
 
             item.onpointerdown = function(e) {
-                e.preventDefault(); clearInterval(fall);
+                e.preventDefault(); 
+                cancelAnimationFrame(fallReq); // สั่งหยุดร่วงทันทีที่นิ้วแตะโดน
+                this.style.pointerEvents = "none"; // ล็อกไอเทม ป้องกันเด็กกดย้ำเบิ้ลคะแนน
                 
                 // --- ส่วนที่เพิ่มใหม่: ป้องกันการกดรัวๆ (เบิ้ลคะแนน) ---
                 this.style.pointerEvents = "none"; 
@@ -1601,6 +1645,10 @@
         }
 
         function checkQuiz(ans, event) {
+            // --- ล็อกปุ่มชั่วคราว ป้องกันการกดเบิ้ล ---
+            let buttons = document.querySelectorAll('.quiz-btn');
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
             let boss = document.getElementById('boss-sprite');
             let diffBonus = calculateDifficultyBonus(quizData[quizIndex].difficulty);
             
@@ -1635,7 +1683,13 @@
                 setTimeout(() => container.style.transform = "translate(-50%, -50%) translateX(10px)", 50);
                 setTimeout(() => container.style.transform = "translate(-50%, -50%) translateX(0)", 100);
             }
-            quizIndex++; showQuiz();
+            
+            // --- หน่วงเวลาให้เห็นเอฟเฟกต์ 0.3 วิ ก่อนเปลี่ยนข้อและปลดล็อกปุ่ม ---
+            setTimeout(() => {
+                quizIndex++; 
+                showQuiz();
+                buttons.forEach(btn => btn.style.pointerEvents = 'auto');
+            }, 300);
         }
 
         function showAchievement(text) {
