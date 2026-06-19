@@ -1210,25 +1210,25 @@
         }
 
         function updateAvatarPosition() {
-            // [แก้บรรทัดนี้] ให้ภารกิจ 3.2 (progress 4) ตัวละครยังคงอยู่ที่ค่ายริมน้ำ (Node 3)
             let targetNode = storyProgress === 4 ? 3 : (storyProgress >= 5 ? 4 : storyProgress);
-            
             let avatar = document.getElementById('map-avatar');
             avatar.style.left = layoutCoords[targetNode].x + '%';
             avatar.style.top = layoutCoords[targetNode].y + '%';
         }
 
-        function prepareMission() {
-            switchScene('scene-game');
-            document.querySelector('.manual-link').classList.add('hidden');
-            document.querySelector('.teacher-link').classList.add('hidden'); // <-- เพิ่มบรรทัดนี้
-            document.getElementById('quiz-container').style.display = 'none';
-            
-            // ตอนอยู่หน้า Map ให้โชว์เมนูเสมอ
+        // 👇 ฟังก์ชันที่หายไป เอากลับมาแล้วครับ 👇
+        function resumeStory() {
+            stopAllBgm();
+            let manLink = document.querySelector('.manual-link');
+            if(manLink) manLink.classList.remove('hidden');
+            let teachLink = document.querySelector('.teacher-link');
+            if(teachLink) teachLink.classList.remove('hidden');
+
+            document.getElementById('dialogue-popup').style.display = 'none';
+
             let leftMenu = document.getElementById('left-menu-container');
             if(leftMenu) leftMenu.style.setProperty('display', 'flex', 'important');
-            
-            // โชว์ปุ่ม 2 อันที่เหลือกลับมา (เผื่อถูกซ่อนไปตอนเล่นเกม)
+
             let btnRestart = document.getElementById('new-restart-btn');
             if(btnRestart) btnRestart.style.setProperty('display', 'flex', 'important');
             let btnChar = document.getElementById('new-char-btn');
@@ -1237,6 +1237,64 @@
             if(Object.values(badges).some(b => b.unlocked)) {
                 document.getElementById('badge-container').style.setProperty('display', 'flex', 'important');
             }
+
+            updateAvatarPosition();
+
+            let targetNode = storyProgress === 4 ? 3 : (storyProgress >= 5 ? 4 : storyProgress);
+
+            setTimeout(() => {
+                let msgs = [];
+                if(storyProgress === 1) msgs = [`ถึงป่าดงดิบแล้ว!`, `ภารกิจที่ 1 อักษรกลาง รออยู่`];
+                if(storyProgress === 2) msgs = [`ถึงถ้ำลึกลับแล้ว!`, `ภารกิจที่ 2 อักษรสูง ไปกันเลย!`];
+                if(storyProgress === 3) msgs = [`ถึงค่ายริมน้ำ!`, `เริ่มภารกิจที่ 3 "อักษรต่ำเดี่ยว" ก่อน`];
+                if(storyProgress === 4) msgs = [`ค่ายริมน้ำ ภารกิจต่อเนื่อง!`, `ลุยรอบสอง "อักษรต่ำคู่"`];
+                if(storyProgress === 5) msgs = [`ถึงวิหารโบราณแล้ว!`, `ลุยคำถามบอส 44 ข้อ 10 นาที!`];
+
+                if(msgs.length > 0) {
+                    showPopupDialogue(targetNode, msgs, () => {
+                        prepareMission();
+                    });
+                }
+            }, 1600);
+        }
+
+        let dialogueStack = [], dialogueCb = null;
+        function showPopupDialogue(nodeIndex, list, callback) {
+            dialogueStack = list; dialogueCb = callback;
+            let popup = document.getElementById('dialogue-popup');
+            popup.style.display = 'flex';
+            popup.style.left = layoutCoords[nodeIndex].x + '%';
+            popup.style.top = layoutCoords[nodeIndex].y + '%';
+            nextDialogue();
+        }
+
+        function nextDialogue() {
+            playSfx('sfx-click');
+            if(dialogueStack.length === 0) {
+                document.getElementById('dialogue-popup').style.display = 'none';
+                if(dialogueCb) dialogueCb();
+                return;
+            }
+            document.getElementById('dialogue-text').innerHTML = dialogueStack.shift();
+            
+            if(dialogueStack.length === 0 && storyProgress === 0) {
+                dialogueCb = () => { storyProgress = 1; resumeStory(); };
+            }
+        }
+
+        function prepareMission() {
+            switchScene('scene-game');
+            let manLink = document.querySelector('.manual-link');
+            if(manLink) manLink.classList.add('hidden');
+            let teachLink = document.querySelector('.teacher-link');
+            if(teachLink) teachLink.classList.add('hidden');
+
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('basket').style.display = 'none';
+            let chest = document.getElementById('game-chest');
+            chest.style.backgroundImage = 'var(--chest-closed)';
+            chest.style.display = 'block';
+        }
 
             updateAvatarPosition(); 
 
