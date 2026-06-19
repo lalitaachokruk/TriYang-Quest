@@ -1216,7 +1216,6 @@
             avatar.style.top = layoutCoords[targetNode].y + '%';
         }
 
-        // 👇 ฟังก์ชันที่หายไป เอากลับมาแล้วครับ 👇
         function resumeStory() {
             stopAllBgm();
             let manLink = document.querySelector('.manual-link');
@@ -1295,63 +1294,7 @@
             chest.style.backgroundImage = 'var(--chest-closed)';
             chest.style.display = 'block';
         }
-
-            updateAvatarPosition(); 
-
-            // [แก้บรรทัดนี้] ให้กล่องข้อความแสดงตรงกับตำแหน่งตัวละครในภารกิจที่ 3.2
-            let targetNode = storyProgress === 4 ? 3 : (storyProgress >= 5 ? 4 : storyProgress);
-
-            setTimeout(() => {
-                let msgs = [];
-                // ภารกิจ 3 ถูกแยกเป็น 3.1 ต่ำเดี่ยว (storyProgress=3) และ 3.2 ต่ำคู่ (storyProgress=4)
-                if(storyProgress === 1) msgs = [`ถึงป่าดงดิบแล้ว!`, `ภารกิจที่ 1 อักษรกลาง รออยู่`];
-                if(storyProgress === 2) msgs = [`ถึงถ้ำลึกลับแล้ว!`, `ภารกิจที่ 2 อักษรสูง ไปกันเลย!`];
-                if(storyProgress === 3) msgs = [`ถึงค่ายริมน้ำ!`, `เริ่มภารกิจที่ 3 "อักษรต่ำเดี่ยว" ก่อน`];
-                if(storyProgress === 4) msgs = [`ค่ายริมน้ำ ภารกิจต่อเนื่อง!`, `ลุยรอบสอง "อักษรต่ำคู่"`];
-                if(storyProgress === 5) msgs = [`ถึงวิหารโบราณแล้ว!`, `ลุยคำถามบอส 44 ข้อ 10 นาที!`];
-
-                if(msgs.length > 0) {
-                    showPopupDialogue(targetNode, msgs, () => {
-                        prepareMission(); 
-                    });
-                }
-            }, 1600);
-        }
-
-        let dialogueStack = [], dialogueCb = null;
-        function showPopupDialogue(nodeIndex, list, callback) {
-            dialogueStack = list; dialogueCb = callback;
-            let popup = document.getElementById('dialogue-popup');
-            popup.style.display = 'flex'; 
-            popup.style.left = layoutCoords[nodeIndex].x + '%';
-            popup.style.top = layoutCoords[nodeIndex].y + '%';
-            nextDialogue();
-        }
-
-        function nextDialogue() {
-            playSfx('sfx-click');
-            if(dialogueStack.length === 0) {
-                document.getElementById('dialogue-popup').style.display = 'none';
-                if(dialogueCb) dialogueCb();
-                return;
-            }
-            document.getElementById('dialogue-text').innerHTML = dialogueStack.shift();
-            
-            if(dialogueStack.length === 0 && storyProgress === 0) {
-                dialogueCb = () => { storyProgress = 1; resumeStory(); }; 
-            }
-        }
-
-        function prepareMission() {
-            switchScene('scene-game');
-            document.querySelector('.manual-link').classList.add('hidden');
-            document.getElementById('quiz-container').style.display = 'none';
-            document.getElementById('basket').style.display = 'none';
-            let chest = document.getElementById('game-chest');
-            chest.style.backgroundImage = 'var(--chest-closed)';
-            chest.style.display = 'block';
-        }
-
+        
         function openChest() {
             let sfxChest = document.getElementById('sfx-chest');
             if(!isMuted) { sfxChest.currentTime = 0; sfxChest.play(); }
