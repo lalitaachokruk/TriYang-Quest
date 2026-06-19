@@ -646,6 +646,27 @@
             btnChar.setAttribute('data-icon', '👥');
             btnChar.onclick = function(e) {
                 e.preventDefault();
+                
+                // --- ส่วนที่เพิ่มใหม่: เคลียร์ตัวจับเวลาและล้าง UI หากกดเปลี่ยนตัวละครกลางด่าน ---
+                clearInterval(gameTimer);
+                clearInterval(spawnInterval);
+                
+                let gameArea = document.getElementById('game-area');
+                if(gameArea) gameArea.innerHTML = "";
+                
+                // ปิด UI ของมินิเกมทั้งหมดให้เกลี้ยง
+                document.getElementById('game-hud').style.display = 'none';
+                document.getElementById('progress-bar').style.display = 'none';
+                document.getElementById('combo-display').style.display = 'none';
+                document.getElementById('basket').style.display = 'none';
+                document.getElementById('quiz-container').style.display = 'none';
+                
+                let timeBonus = document.getElementById('time-bonus-bar');
+                if(timeBonus) timeBonus.remove();
+                
+                stopAllBgm();
+                // -------------------------------------------------------
+
                 // ซ่อนเมนูตอนเข้าหน้าเลือกคู่หู
                 leftMenu.style.setProperty('display', 'none', 'important');
                 document.getElementById('badge-container').style.setProperty('display', 'none', 'important');
@@ -1067,8 +1088,30 @@
         }
         window.onresize = drawMap; 
 
-        function goHome() {
+       function goHome() {
             storyProgress = 0;
+            
+            // --- ส่วนที่เพิ่มใหม่: เคลียร์ตัวจับเวลาและล้างองค์ประกอบเกมที่ค้างอยู่ ---
+            clearInterval(gameTimer);
+            clearInterval(spawnInterval);
+            
+            let gameArea = document.getElementById('game-area');
+            if(gameArea) gameArea.innerHTML = ""; // ล้างไอเทม .game-item ที่ค้างใน DOM
+            
+            // ซ่อน UI ของมินิเกมและบอสไฟต์ทั้งหมด
+            document.getElementById('game-hud').style.display = 'none';
+            document.getElementById('progress-bar').style.display = 'none';
+            document.getElementById('combo-display').style.display = 'none';
+            document.getElementById('basket').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'none';
+            
+            let timeBonus = document.getElementById('time-bonus-bar');
+            if(timeBonus) timeBonus.remove(); // ลบหลอดโบนัสเวลาถ้ามีอยู่
+            
+            stopAllBgm(); // ปิดเพลงพื้นหลังของด่านนั้นๆ
+            // --- จบส่วนที่เพิ่มใหม่ ---
+
+            // โค้ดเดิม: ซ่อนเมนูและกลับหน้าแรก
             let leftMenu = document.getElementById('left-menu-container');
             if(leftMenu) leftMenu.style.setProperty('display', 'none', 'important');
             document.getElementById('badge-container').style.setProperty('display', 'none', 'important');
@@ -1357,10 +1400,15 @@
             item.onpointerdown = function(e) {
                 e.preventDefault(); clearInterval(fall);
                 
+                // --- ส่วนที่เพิ่มใหม่: ป้องกันการกดรัวๆ (เบิ้ลคะแนน) ---
+                this.style.pointerEvents = "none"; 
+                // ------------------------------------------
+
                 if(targetArr.includes(this.innerText)) {
                     let pointGain = 1 * scoreMultiplier;
                     currentScore += pointGain; 
                     comboCount++;
+                
                     if(comboCount > maxCombo) maxCombo = comboCount;
                     
                     let targetScore = 20;
